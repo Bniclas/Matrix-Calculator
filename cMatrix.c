@@ -278,13 +278,16 @@ float getInverse( int m, int n, float matrix[][n] ){
                 }
         */
         
-        for (x=0; x<m; x++){
-            for (y=0; y<n; y++){
-                
-                if ( x == row || y == col ){
-
+        for (x=0; x<m*m; x++){
+            if ( x % m  == 0 ){
+                x = 0;
+                row += 1;
+                if ( row == m ){
+                    break;
                 }
-                else {
+            }
+            else {
+                for ( y=0; y<n; y++){
                     if ( y<col ) {
                         if (x<row){
                             subMatrix[x][y] = matrix[x][y];
@@ -304,18 +307,12 @@ float getInverse( int m, int n, float matrix[][n] ){
                     
                     printf("Submatrix: \n");
                     printMatrix( m-1, n-1, subMatrix);
-                    initMatrix( m-1, n-1, subMatrix );
+                    initMatrix( m-1, n-1, subMatrix );   
                 }
-                    
-                if (y == n-1){
-                    row += 1;
-                    col = 0;
-                }
-                else {
-                    col += 1;
-                }
+                
+                col += 1;
             }
-        
+            
         }
 
 
