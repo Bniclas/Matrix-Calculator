@@ -172,7 +172,7 @@ float getDeterminant( int m, int n, float matrix[][n] ){
 }  
 
 
-float getTranspon( int m, int n, float matrix[][n] ){  
+float getTransponiert( int m, int n, float matrix[][n] ){  
     float matrixT[n][m];
     initMatrix( n, m, matrixT );
     
@@ -220,25 +220,123 @@ float getInverse( int m, int n, float matrix[][n] ){
         printMatrix( m, n, inverseMatrix );
     }
     else {
-        float inverseMatrix[m][n*2];
-        initMatrix( m, n*2, inverseMatrix );
+        float adjMatrix[m][n];
+        initMatrix( m, n, adjMatrix );
+        //initMatrix( m, n, adjMatrix );
+
+        // Die Determinante der Matrix berechnen
+
+        float detA = determinante;
+
+
+        // Untermatrix erhalten und Determinante berechnen
+        // Wenn Spalte kleiner ist als aktuelle Spalte, dann bleibt der Spaltenindex; sonst Spaltenindex-1
+
+        float subMatrix[m-1][n-1];
+        initMatrix( m-1, n-1, subMatrix );
+        int i,j,x,y;
+        int row = 0;
+        int col = 0;
+    
         
-        float *ptr = &inverseMatrix[0][n-2];
+        /*
+                        if ( x == row || y == col ){
+
+                }
+                else {
+                    if ( y<col ) {
+                        if (x<row){
+                            subMatrix[x][y] = matrix[x][y];
+                        }
+                        else if (x>row){
+                            subMatrix[x-1][y] = matrix[x][y];
+                        }
+                    }
+                    else if ( y>col ) {
+                        if (x<row){
+                            subMatrix[x][y-1] = matrix[x][y];
+                        }
+                        else if (x>row){
+                            subMatrix[x-1][y-1] = matrix[x][y];
+                        }
+                    }
+                    
+                    printf("Submatrix: \n");
+                    printMatrix( m-1, n-1, subMatrix);
+                    initMatrix( m-1, n-1, subMatrix );
+                }
+        */
         
-        for( int i=0; i<=m-1; i++ ){
-            for( int j=0; j<=n-1; j++ ){
-                inverseMatrix[i][j] = matrix[i][j];
+        for (i=0; i<m*m; i++){
+            
+            if ( x == row || y == col ){
+
             }
-        }
-        
-        for (int i=0; i<=m; i++){
-            ptr = &inverseMatrix[i][n+i];
-            *ptr = 1;
+            else {
+                if ( y<col ) {
+                    if (x<row){
+                        subMatrix[x][y] = matrix[x][y];
+                    }
+                    else if (x>row){
+                        subMatrix[x-1][y] = matrix[x][y];
+                    }
+                }
+                else if ( y>col ) {
+                    if (x<row){
+                        subMatrix[x][y-1] = matrix[x][y];
+                    }
+                    else if (x>row){
+                        subMatrix[x-1][y-1] = matrix[x][y];
+                    }
+                }
+                
+                printf("Submatrix: \n");
+                printMatrix( m-1, n-1, subMatrix);
+                initMatrix( m-1, n-1, subMatrix );
+            }
+            
         }
 
+
+        // Schachbrett auf Matrix anwenden: Wenn _index_actual % 2 == 0 dann *1 sonst *-1
+        for (i=0; i<n; i++){
+            for (j=0; j<n; j++){
+                /*
+                if( matrix[i][j] == 0 ){
+                    continue;
+                }
+                */
+                if ( i % 2 == 0 ){
+                    if ( j % 2 == 0 ){
+                        adjMatrix[i][j] = 1 * adjMatrix[i][j];
+                    }
+                    else {
+                        adjMatrix[i][j] = -1 * adjMatrix[i][j];
+                    }
+                }
+                else {
+                    if ( j % 2 == 0 ){
+                        adjMatrix[i][j] = -1 * adjMatrix[i][j];
+                    }
+                    else {
+                        adjMatrix[i][j] = 1 * adjMatrix[i][j];
+                    }
+                }
+            }
+        }
+
+
+        // Letzte Berechnung A^-1 = 1/det(A) * Adj(A) [transponiert]
+        getTransponiert( m, n, adjMatrix);
+        
+        
+        // Ausgabe der Matrix
+        
         printf("----------------------------\n");
         printf("Die Inverse ist: \n");
-        printMatrix( m, n, inverseMatrix );
+        printf("%.2f * \n", 1/detA);
+        printMatrix( m, n, adjMatrix );
+
     }
     
     return 0;  
@@ -301,7 +399,7 @@ int main() {
     switch( nextAction ){  
         case 1: getInverse( m, n, matrix ); break;  
         case 2: printf("Die Determinante beträgt = %.2f", getDeterminant( m, n, matrix ) ); break;  
-        case 3: getTranspon( m, n, matrix ); break;
+        case 3: getTransponiert( m, n, matrix ); break;
         default: break;
     }  
 
