@@ -15,6 +15,15 @@ void printMatrix( int m, int n, float matrix[][n] ){
     }  
 }  
 
+void multMatrixWithFactor( int m, int n, float matrix[][n], float factor ){
+    int i,j;  
+
+    for( i=0; i<m; i++ ){  
+        for( j=0; j<n; j++ ){  
+            matrix[i][j] = factor * matrix[i][j];  
+        }  
+    }  
+}
 
 void initMatrix( int m, int n, float matrix[][n] ){  
 
@@ -30,13 +39,15 @@ void initMatrix( int m, int n, float matrix[][n] ){
         Nur um schneller Testmatrizen erstellen zu können und beim Testen nicht jeden Wert selbst einzutragen
     */
     
-    
+ 
     switch( n ){
-        case 2: matrix[0][0] = 1; matrix[1][1] = 2; break;
+        //case 2: matrix[0][0] = 1; matrix[1][1] = 2; break;
         case 3: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; break;
         case 4: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; matrix[3][3] = 4; break;
         default: break;
     }
+    
+    
 }  
 
 
@@ -267,34 +278,44 @@ float getInverse( int m, int n, float matrix[][n] ){
                 }
         */
         
-        for (i=0; i<m*m; i++){
-            
-            if ( x == row || y == col ){
-
-            }
-            else {
-                if ( y<col ) {
-                    if (x<row){
-                        subMatrix[x][y] = matrix[x][y];
-                    }
-                    else if (x>row){
-                        subMatrix[x-1][y] = matrix[x][y];
-                    }
-                }
-                else if ( y>col ) {
-                    if (x<row){
-                        subMatrix[x][y-1] = matrix[x][y];
-                    }
-                    else if (x>row){
-                        subMatrix[x-1][y-1] = matrix[x][y];
-                    }
-                }
+        for (x=0; x<m; x++){
+            for (y=0; y<n; y++){
                 
-                printf("Submatrix: \n");
-                printMatrix( m-1, n-1, subMatrix);
-                initMatrix( m-1, n-1, subMatrix );
+                if ( x == row || y == col ){
+
+                }
+                else {
+                    if ( y<col ) {
+                        if (x<row){
+                            subMatrix[x][y] = matrix[x][y];
+                        }
+                        else if (x>row){
+                            subMatrix[x-1][y] = matrix[x][y];
+                        }
+                    }
+                    else if ( y>col ) {
+                        if (x<row){
+                            subMatrix[x][y-1] = matrix[x][y];
+                        }
+                        else if (x>row){
+                            subMatrix[x-1][y-1] = matrix[x][y];
+                        }
+                    }
+                    
+                    printf("Submatrix: \n");
+                    printMatrix( m-1, n-1, subMatrix);
+                    initMatrix( m-1, n-1, subMatrix );
+                }
+                    
+                if (y == n-1){
+                    row += 1;
+                    col = 0;
+                }
+                else {
+                    col += 1;
+                }
             }
-            
+        
         }
 
 
@@ -334,8 +355,9 @@ float getInverse( int m, int n, float matrix[][n] ){
         
         printf("----------------------------\n");
         printf("Die Inverse ist: \n");
-        printf("%.2f * \n", 1/detA);
-        printMatrix( m, n, adjMatrix );
+        
+        multMatrixWithFactor( m, n, matrix, 1/detA);
+        printMatrix( m, n, matrix );
 
     }
     
