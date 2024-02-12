@@ -277,43 +277,34 @@ float getInverse( int m, int n, float matrix[][n] ){
                     initMatrix( m-1, n-1, subMatrix );
                 }
         */
-        
-        for (x=0; x<m*m; x++){
-            if ( x % m  == 0 ){
-                x = 0;
-                row += 1;
-                if ( row == m ){
-                    break;
-                }
-            }
-            else {
-                for ( y=0; y<n; y++){
-                    if ( y<col ) {
-                        if (x<row){
-                            subMatrix[x][y] = matrix[x][y];
-                        }
-                        else if (x>row){
-                            subMatrix[x-1][y] = matrix[x][y];
-                        }
-                    }
-                    else if ( y>col ) {
-                        if (x<row){
-                            subMatrix[x][y-1] = matrix[x][y];
-                        }
-                        else if (x>row){
-                            subMatrix[x-1][y-1] = matrix[x][y];
-                        }
+        int counter = 0;
+
+        // Wir loopen für jede Zeile m-mal durch die komplette Matrix
+        while( counter < m * m ){
+            
+            printf("Durchlauf: %i\n", counter+1);
+            for(x=0;x<m;x++){
+                for(y=0;y<m;y++){
+                    if(x==row || y==col){
+                        continue;
                     }
                     
-                    printf("Submatrix: \n");
-                    printMatrix( m-1, n-1, subMatrix);
-                    initMatrix( m-1, n-1, subMatrix );   
-                }
-                
+                    
+                    
+                    printf("x: %i y:%i \n", x, y);
+                }   
+            }
+            
+            if ( counter == m ){
+                col = 0;
+                row += 1;  
+            } else {
                 col += 1;
             }
             
+            counter += 1;
         }
+        
 
 
         // Schachbrett auf Matrix anwenden: Wenn _index_actual % 2 == 0 dann *1 sonst *-1
