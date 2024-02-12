@@ -43,8 +43,8 @@ void initMatrix( int m, int n, float matrix[][n], int autofill ){
     if (autofill == 1){
         switch( n ){
             case 2: matrix[0][0] = 1; matrix[1][1] = 2; break;
-            case 3: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; break;
-            case 4: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; matrix[3][3] = 4; break;
+            case 3: matrix[0][0] = 3; matrix[1][1] = 3; matrix[2][2] = 3; matrix[2][0] = 3;break;
+            case 4: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; matrix[3][3] = 4; matrix[3][0] = 4; break;
             default: break;
         }   
     }
@@ -328,7 +328,6 @@ float getInverse( int m, int n, float matrix[][n] ){
 
 
         // Letzte Berechnung A^-1 = 1/det(A) * Adj(A) [transponiert]
-        getTransponiert( m, n, adjMatrix);
         
         
         // Ausgabe der Matrix
@@ -337,7 +336,7 @@ float getInverse( int m, int n, float matrix[][n] ){
         printf("Die Inverse ist: \n");
         
         multMatrixWithFactor( m, n, adjMatrix, 1/detA);
-        printMatrix( m, n, adjMatrix );
+        getTransponiert( m, n, adjMatrix);
 
     }
     
