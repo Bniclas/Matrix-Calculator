@@ -413,7 +413,7 @@ int main() {
 
 
     printf("Was möchtest du tun ?\n");  
-    printf("Inverse Matrix bilden (WIP): [1]\n");  
+    printf("Inverse Matrix bilden: [1]\n");  
     printf("Determinante bilden: [2]\n");  
     printf("Matrix transponieren: [3]\n");  
     scanf("%i", &nextAction);  
