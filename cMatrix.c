@@ -43,7 +43,7 @@ void initMatrix( int m, int n, float matrix[][n], int autofill ){
     if (autofill == 1){
         switch( n ){
             case 2: matrix[0][0] = 1; matrix[1][1] = 2; break;
-            case 3: matrix[0][0] = 3; matrix[1][1] = 3; matrix[2][2] = 3; matrix[2][0] = 3;break;
+            case 3: matrix[0][1] = 2; matrix[1][2] = 3 ;matrix[2][0] = 4; break;
             case 4: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; matrix[3][3] = 4; matrix[3][0] = 4; break;
             default: break;
         }   
@@ -80,18 +80,24 @@ float calcDiagonals( int m, int n, int nBaseMatrix, float matrix[][n] ){
             if( j == m ){
                 startIndexN += 1;
                 diagonalSum += diagonalMult;
+                /*
                 printf("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
+                */
                 diagonalMult = 1;
             }
             else {
                 diagonalMult *= matrix[j][startIndexN+j];
+                /*
                 printf("Wert: x(%i|%i) = %.2f\n", j, startIndexN+j, matrix[j][startIndexN+j]);
+                */
             }
         }   
     }
     
+    /*
     printf("Werte der Diagonalen von links oben nach rechts unten: %.2f\n", diagonalSum);
     printf("-----------------------------\n");
+    */
     
     
     int saveSum = diagonalSum;
@@ -112,18 +118,23 @@ float calcDiagonals( int m, int n, int nBaseMatrix, float matrix[][n] ){
             if( j == m ){
                 startIndexN -= 1;
                 diagonalSum += diagonalMult;
+                /*
                 printf("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
+                */
                 diagonalMult = 1;
             }
             else {
                 diagonalMult *= matrix[j][startIndexN-j];
+                /*
                 printf("Wert: x(%i|%i) = %.2f\n", j, startIndexN-j, matrix[j][startIndexN-j]);
+                */
             }
         }   
     }
-    
+    /*
     printf("Werte der Diagonalen von rechts oben nach links unten: %.2f\n", diagonalSum);
     printf("-----------------------------\n");
+    */
     
     int determinante = saveSum - diagonalSum;
     
@@ -196,8 +207,8 @@ float getTransponiert( int m, int n, float matrix[][n] ){
     }
     
     printf("----------------------------\n");
-    printf("Transponierte Matrix: \n");
-    printMatrix( n, m, matrixT );
+    //printf("Transponierte Matrix: \n");
+    //printMatrix( n, m, matrixT );
 
     return 0;  
 }  
@@ -333,10 +344,12 @@ float getInverse( int m, int n, float matrix[][n] ){
         // Ausgabe der Matrix
         
         printf("----------------------------\n");
+        printf("Die Determinante ist: %.2f \n", detA);
         printf("Die Inverse ist: \n");
         
         multMatrixWithFactor( m, n, adjMatrix, 1/detA);
         getTransponiert( m, n, adjMatrix);
+        printMatrix( n, m, adjMatrix );
 
     }
     
