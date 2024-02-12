@@ -25,7 +25,7 @@ void multMatrixWithFactor( int m, int n, float matrix[][n], float factor ){
     }  
 }
 
-void initMatrix( int m, int n, float matrix[][n] ){  
+void initMatrix( int m, int n, float matrix[][n], int autofill ){  
 
     int i,j;  
 
@@ -40,13 +40,14 @@ void initMatrix( int m, int n, float matrix[][n] ){
     */
     
  
-    switch( n ){
-        //case 2: matrix[0][0] = 1; matrix[1][1] = 2; break;
-        case 3: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; break;
-        case 4: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; matrix[3][3] = 4; break;
-        default: break;
+    if (autofill == 1){
+        switch( n ){
+            case 2: matrix[0][0] = 1; matrix[1][1] = 2; break;
+            case 3: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; break;
+            case 4: matrix[0][0] = 1; matrix[1][1] = 2; matrix[2][2] = 3; matrix[3][3] = 4; break;
+            default: break;
+        }   
     }
-    
     
 }  
 
@@ -79,7 +80,7 @@ float calcDiagonals( int m, int n, int nBaseMatrix, float matrix[][n] ){
             if( j == m ){
                 startIndexN += 1;
                 diagonalSum += diagonalMult;
-                printf("Ergebnis der Diagonale %.2f : %.2f\n", startIndexN, diagonalMult );
+                printf("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
                 diagonalMult = 1;
             }
             else {
@@ -89,7 +90,7 @@ float calcDiagonals( int m, int n, int nBaseMatrix, float matrix[][n] ){
         }   
     }
     
-    printf("Werte der Diagonalen von links oben nach rechts unten: %i\n", diagonalSum);
+    printf("Werte der Diagonalen von links oben nach rechts unten: %.2f\n", diagonalSum);
     printf("-----------------------------\n");
     
     
@@ -111,17 +112,17 @@ float calcDiagonals( int m, int n, int nBaseMatrix, float matrix[][n] ){
             if( j == m ){
                 startIndexN -= 1;
                 diagonalSum += diagonalMult;
-                printf("Ergebnis der Diagonale %i : %i\n", startIndexN, diagonalMult );
+                printf("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
                 diagonalMult = 1;
             }
             else {
                 diagonalMult *= matrix[j][startIndexN-j];
-                printf("Wert: x(%i|%i) = %i\n", j, startIndexN-j, matrix[j][startIndexN-j]);
+                printf("Wert: x(%i|%i) = %.2f\n", j, startIndexN-j, matrix[j][startIndexN-j]);
             }
         }   
     }
     
-    printf("Werte der Diagonalen von rechts oben nach links unten: %i\n", diagonalSum);
+    printf("Werte der Diagonalen von rechts oben nach links unten: %.2f\n", diagonalSum);
     printf("-----------------------------\n");
     
     int determinante = saveSum - diagonalSum;
@@ -130,7 +131,7 @@ float calcDiagonals( int m, int n, int nBaseMatrix, float matrix[][n] ){
 }
 
 
-float getDeterminant( int m, int n, float matrix[][n] ){  
+float getDeterminant( int m, int n, float matrixData[][n] ){  
     int i, j;
     float determinante = 0;
 
@@ -142,14 +143,15 @@ float getDeterminant( int m, int n, float matrix[][n] ){
 
     // Berechnung von Determinante von 2x2 Matrix
     if ( m == 2 ){  
-        determinante = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+        determinante = matrixData[0][0] * matrixData[1][1] - matrixData[0][1] * matrixData[1][0];
+        return determinante;
     }  
     // Berechnung von größeren Matrizen
     else {  
         int newColumns = m-1;  
         float newMatrix[m][n+newColumns];  
 
-        initMatrix( m, n+newColumns, newMatrix );  
+        initMatrix( m, n+newColumns, newMatrix, 0 );  
 
         int index = 0;  
         
@@ -160,14 +162,14 @@ float getDeterminant( int m, int n, float matrix[][n] ){
         // Die alte Matrix übernehmen
         for (i=0;i<=mForArray;i++){
             for(j=0;j<=nForArray;j++){
-                newMatrix[i][j] = matrix[i][j];
+                newMatrix[i][j] = matrixData[i][j];
             }
         }
 
         // Die zusätzlichen Spalten erstellen
         for (j=0;j<=newColumns-1;j++){  
             for( i=0;i<=newColumns-1;i++){  
-                newMatrix[i][j+n] = matrix[i][j];  
+                newMatrix[i][j+n] = matrixData[i][j];  
             }  
         }  
 
@@ -185,7 +187,7 @@ float getDeterminant( int m, int n, float matrix[][n] ){
 
 float getTransponiert( int m, int n, float matrix[][n] ){  
     float matrixT[n][m];
-    initMatrix( n, m, matrixT );
+    initMatrix( n, m, matrixT, 0 );
     
     for( int j=0; j<=m-1; j++ ){
         for( int i=0; i<=n-1; i++ ){
@@ -207,9 +209,9 @@ float getInverse( int m, int n, float matrix[][n] ){
         return 0;  
     }  
     
-    float determinante = getDeterminant( m, n, matrix );
+    float detA = getDeterminant( m, n, matrix );
     
-    if( determinante == 0 ){
+    if( detA == 0 ){
         printf("Es kann keine Inverse dieser Matrix gebildet werden, da die Determinante 0 beträgt.");
         return 0;
     }
@@ -217,9 +219,9 @@ float getInverse( int m, int n, float matrix[][n] ){
     // Berechnung einer 2x2 Matrix Inversen
     if ( n == 2 ){
         float inverseMatrix[2][2];
-        initMatrix( 2, 2, inverseMatrix );
+        initMatrix( 2, 2, inverseMatrix, 0 );
 
-        float x = 1/determinante;
+        float x = 1/detA;
 
         inverseMatrix[0][0] = x*matrix[1][1];
         inverseMatrix[1][1] = x*matrix[0][0];
@@ -232,29 +234,28 @@ float getInverse( int m, int n, float matrix[][n] ){
     }
     else {
         float adjMatrix[m][n];
-        initMatrix( m, n, adjMatrix );
-        //initMatrix( m, n, adjMatrix );
-
-        // Die Determinante der Matrix berechnen
-
-        float detA = determinante;
-
+        initMatrix( m, n, adjMatrix, 0 );
 
         // Untermatrix erhalten und Determinante berechnen
         // Wenn Spalte kleiner ist als aktuelle Spalte, dann bleibt der Spaltenindex; sonst Spaltenindex-1
 
         float subMatrix[m-1][n-1];
-        initMatrix( m-1, n-1, subMatrix );
-        int i,j,x,y;
+        initMatrix( m-1, n-1, subMatrix, 0 );
+        int x,y;
         int row = 0;
         int col = 0;
-    
-        
-        /*
-                        if ( x == row || y == col ){
+        int counter = 0;
 
-                }
-                else {
+        // Wir loopen für jede Zeile m-mal durch die komplette Matrix
+        while( counter < m * m ){
+            
+            printf("Durchlauf: %i\n", counter+1);
+            for(x=0;x<m;x++){
+                for(y=0;y<m;y++){
+                    if(x==row || y==col){
+                        continue;
+                    }
+                    
                     if ( y<col ) {
                         if (x<row){
                             subMatrix[x][y] = matrix[x][y];
@@ -272,28 +273,20 @@ float getInverse( int m, int n, float matrix[][n] ){
                         }
                     }
                     
-                    printf("Submatrix: \n");
-                    printMatrix( m-1, n-1, subMatrix);
-                    initMatrix( m-1, n-1, subMatrix );
-                }
-        */
-        int counter = 0;
-
-        // Wir loopen für jede Zeile m-mal durch die komplette Matrix
-        while( counter < m * m ){
-            
-            printf("Durchlauf: %i\n", counter+1);
-            for(x=0;x<m;x++){
-                for(y=0;y<m;y++){
-                    if(x==row || y==col){
-                        continue;
-                    }
-                    
-                    
-                    
-                    printf("x: %i y:%i \n", x, y);
+                    //printf("x: %i y:%i \n", x, y);
                 }   
             }
+            // Am Ende des Durchlaufs setzen wir die Submatrix zurück und setzten an den Spalten- sowie Zeilenindex des aktuellen Durchlaufs die Determinante der Submatrix
+            adjMatrix[row][col] = getDeterminant(m-1,n-1,subMatrix);
+            
+            
+            printf("Determinante der Submatrix: %.2f \n", adjMatrix[row][col] );
+            
+            /*           
+            printf("Submatrix: \n");
+            printMatrix( m-1, n-1, subMatrix);
+            */
+            initMatrix( m-1, n-1, subMatrix, 0 );
             
             if ( counter == m ){
                 col = 0;
@@ -305,30 +298,32 @@ float getInverse( int m, int n, float matrix[][n] ){
             counter += 1;
         }
         
+        printMatrix( m, n, adjMatrix);
+        
 
 
         // Schachbrett auf Matrix anwenden: Wenn _index_actual % 2 == 0 dann *1 sonst *-1
-        for (i=0; i<n; i++){
-            for (j=0; j<n; j++){
+        for (x=0; x<n; x++){
+            for (y=0; y<n; y++){
                 /*
-                if( matrix[i][j] == 0 ){
+                if( matrix[x][y] == 0 ){
                     continue;
                 }
                 */
-                if ( i % 2 == 0 ){
-                    if ( j % 2 == 0 ){
-                        adjMatrix[i][j] = 1 * adjMatrix[i][j];
+                if ( x % 2 == 0 ){
+                    if ( y % 2 == 0 ){
+                        adjMatrix[x][y] = 1 * adjMatrix[x][y];
                     }
                     else {
-                        adjMatrix[i][j] = -1 * adjMatrix[i][j];
+                        adjMatrix[x][y] = -1 * adjMatrix[x][y];
                     }
                 }
                 else {
-                    if ( j % 2 == 0 ){
-                        adjMatrix[i][j] = -1 * adjMatrix[i][j];
+                    if ( y % 2 == 0 ){
+                        adjMatrix[x][y] = -1 * adjMatrix[x][y];
                     }
                     else {
-                        adjMatrix[i][j] = 1 * adjMatrix[i][j];
+                        adjMatrix[x][y] = 1 * adjMatrix[x][y];
                     }
                 }
             }
@@ -344,8 +339,8 @@ float getInverse( int m, int n, float matrix[][n] ){
         printf("----------------------------\n");
         printf("Die Inverse ist: \n");
         
-        multMatrixWithFactor( m, n, matrix, 1/detA);
-        printMatrix( m, n, matrix );
+        multMatrixWithFactor( m, n, adjMatrix, 1/detA);
+        printMatrix( m, n, adjMatrix );
 
     }
     
@@ -368,7 +363,7 @@ int main() {
     scanf("%i", &n);  
 
     float matrix[m][n];  
-    initMatrix( m, n, matrix );  
+    initMatrix( m, n, matrix, 1 );  
 
     do {  
         printf("Möchtest du noch einen Wert angeben? 0 = nein; 0<x>0 = ja \n");  
