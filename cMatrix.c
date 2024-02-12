@@ -280,22 +280,19 @@ float getInverse( int m, int n, float matrix[][n] ){
             adjMatrix[row][col] = getDeterminant(m-1,n-1,subMatrix);
             
             
-            printf("Determinante der Submatrix: %.2f \n", adjMatrix[row][col] );
-            
-            /*           
-            printf("Submatrix: \n");
+            printf("Submatrix von r: %i c: %i: \n", row, col);
             printMatrix( m-1, n-1, subMatrix);
-            */
+            printf("Determinante der Submatrix: %.2f \n\n", adjMatrix[row][col] );
+            
             initMatrix( m-1, n-1, subMatrix, 0 );
             
-            if ( counter == m ){
+            counter += 1;
+            if ( counter % m == 0 && counter != 0 ){
                 col = 0;
                 row += 1;  
             } else {
                 col += 1;
             }
-            
-            counter += 1;
         }
         
         printMatrix( m, n, adjMatrix);
