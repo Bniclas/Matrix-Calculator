@@ -178,8 +178,8 @@ float getDeterminant( int m, int n, float matrixData[][n] ){
         }
 
         // Die zusätzlichen Spalten erstellen
-        for (j=0;j<=newColumns-1;j++){  
-            for( i=0;i<=newColumns-1;i++){  
+        for (j=0;j<newColumns;j++){  
+            for( i=0;i<m;i++){  
                 newMatrix[i][j+n] = matrixData[i][j];  
             }  
         }  
@@ -196,21 +196,29 @@ float getDeterminant( int m, int n, float matrixData[][n] ){
 }  
 
 
-float getTransponiert( int m, int n, float matrix[][n] ){  
+void getTransponiert( int m, int n, float matrix[][n] ){  
     float matrixT[n][m];
     initMatrix( n, m, matrixT, 0 );
     
-    for( int j=0; j<=m-1; j++ ){
-        for( int i=0; i<=n-1; i++ ){
+    for( int j=0; j<m; j++ ){
+        for( int i=0; i<n; i++ ){
             matrixT[i][j] = matrix[j][i];
         }
     }
     
+    for( int j=0; j<m; j++ ){
+        for( int i=0; i<n; i++ ){
+            matrix[i][j] = matrixT[i][j];
+        }
+    }
+    
+    /*
     printf("----------------------------\n");
-    //printf("Transponierte Matrix: \n");
-    //printMatrix( n, m, matrixT );
+    printf("Transponierte Matrix: \n");
+    printMatrix( n, m, matrixT );
+    printf("----------------------------\n");
+    */
 
-    return 0;  
 }  
 
   
@@ -349,7 +357,7 @@ float getInverse( int m, int n, float matrix[][n] ){
         
         multMatrixWithFactor( m, n, adjMatrix, 1/detA);
         getTransponiert( m, n, adjMatrix);
-        printMatrix( n, m, adjMatrix );
+        printMatrix( m, n, adjMatrix );
 
     }
     
