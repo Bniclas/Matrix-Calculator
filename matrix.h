@@ -369,7 +369,7 @@ float getInverse( int m, int n, float matrix[][n] ){
 }  
 
 
-int main() {  
+void startMatrixCalc() {  
     int m; // Zeilen   
     int n; // Spalten   
     int finish = 0;  
@@ -428,6 +428,4 @@ int main() {
         case 3: getTransponiert( m, n, matrix ); printf("Transponierte Matrix: \n"); printMatrix( m, n, matrix ); break;
         default: break;
     }  
-
-    return 0;  
 }  
