@@ -39,7 +39,7 @@ void initMatrix( int m, int n, float matrix[][n], int autofill ){
         Nur um schneller Testmatrizen erstellen zu können und beim Testen nicht jeden Wert selbst einzutragen
     */
     
- 
+    /*
     if (autofill == 1){
         switch( n ){
             case 2: matrix[0][0] = 1; matrix[1][1] = 2; break;
@@ -48,6 +48,7 @@ void initMatrix( int m, int n, float matrix[][n], int autofill ){
             default: break;
         }   
     }
+    */
     
 }  
 
@@ -184,9 +185,11 @@ float getDeterminant( int m, int n, float matrixData[][n] ){
             }  
         }  
 
+        /*
         // Die Matrix ausgeben  
         printf("--------------------\nDeterminantenmatrix:\n");  
         printMatrix( m, n+newColumns, newMatrix );  
+        */
     
     
         determinante = calcDiagonals( m, n+newColumns, n, newMatrix);
@@ -268,7 +271,7 @@ float getInverse( int m, int n, float matrix[][n] ){
         // Wir loopen für jede Zeile m-mal durch die komplette Matrix
         while( counter < m * m ){
             
-            printf("Durchlauf: %i\n", counter+1);
+            //printf("Durchlauf: %i\n", counter+1);
             for(x=0;x<m;x++){
                 for(y=0;y<m;y++){
                     if(x==row || y==col){
@@ -298,10 +301,11 @@ float getInverse( int m, int n, float matrix[][n] ){
             // Am Ende des Durchlaufs setzen wir die Submatrix zurück und setzten an den Spalten- sowie Zeilenindex des aktuellen Durchlaufs die Determinante der Submatrix
             adjMatrix[row][col] = getDeterminant(m-1,n-1,subMatrix);
             
-            
+            /*
             printf("Submatrix von r: %i c: %i: \n", row, col);
             printMatrix( m-1, n-1, subMatrix);
             printf("Determinante der Submatrix: %.2f \n\n", adjMatrix[row][col] );
+            */
             
             initMatrix( m-1, n-1, subMatrix, 0 );
             
@@ -314,7 +318,7 @@ float getInverse( int m, int n, float matrix[][n] ){
             }
         }
         
-        printMatrix( m, n, adjMatrix);
+        //printMatrix( m, n, adjMatrix);
         
 
 
@@ -352,7 +356,7 @@ float getInverse( int m, int n, float matrix[][n] ){
         // Ausgabe der Matrix
         
         printf("----------------------------\n");
-        printf("Die Determinante ist: %.2f \n", detA);
+        //printf("Die Determinante ist: %.2f \n", detA);
         printf("Die Inverse ist: \n");
         
         multMatrixWithFactor( m, n, adjMatrix, 1/detA);
@@ -421,7 +425,7 @@ int main() {
     switch( nextAction ){  
         case 1: getInverse( m, n, matrix ); break;  
         case 2: printf("Die Determinante beträgt = %.2f", getDeterminant( m, n, matrix ) ); break;  
-        case 3: getTransponiert( m, n, matrix ); break;
+        case 3: getTransponiert( m, n, matrix ); printf("Transponierte Matrix: \n"); printMatrix( m, n, matrix ); break;
         default: break;
     }  
 
