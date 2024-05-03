@@ -19,30 +19,30 @@ public class Matrizenrechner {
 	    
 	    Scanner scan = new Scanner( System.in );
 	    
-	    System.out.println("Bitte geben Sie die Zeilenzahl Ihrer Matrix an!\n");  
+	    System.out.println("Bitte geben Sie die Zeilenzahl Ihrer Matrix an!");  
 	    this.m = scan.nextInt();
 
-	    System.out.println("Bitte geben Sie die Spaltenzahl Ihrer Matrix an!\n");  
+	    System.out.println("Bitte geben Sie die Spaltenzahl Ihrer Matrix an!");  
 	    this.n = scan.nextInt(); 
 	    
 	    matrix = new float[m][n];
 	    this.initMatrix( this.m, this.n, matrix );  
 
 	    do {  
-	    	System.out.println("Möchtest du noch einen Wert angeben? 0 = nein; 0<x>0 = ja \n");  
+	    	System.out.println("Möchtest du noch einen Wert angeben? 0 = nein; 0<x>0 = ja");  
 	    	finish = scan.nextInt();
 
 	        if ( finish == 0 ){  
 	            break;  
 	        }  
 
-	        System.out.println("Zeile: \n");  
+	        System.out.println("Zeile:");  
 	        overwriteM = scan.nextInt();
 
-	        System.out.println("Spalte: \n");  
+	        System.out.println("Spalte:");  
 	        overwriteN = scan.nextInt();
 
-	        System.out.println("Wert: \n");  
+	        System.out.println("Wert:");  
 	        overwriteValue = scan.nextInt(); 
 
 	        // Wir müssen noch die Zeilen- und Spaltenindizes um den Wert 1 subtrahieren,   
@@ -51,17 +51,17 @@ public class Matrizenrechner {
 	    } while( finish != 0 );  
 
 
-	    System.out.println("--------------------\nMatrix:\n");  
+	    System.out.println("--------------------\nMatrix:");  
 	    this.printMatrix( this.m, this.n, this.matrix );  
 
-	    System.out.println("--------------------\nNächste Aktion:\n");  
+	    System.out.println("--------------------\nNächste Aktion:");  
 	    int nextAction;  
 
 
-	    System.out.println("Was möchtest du tun ?\n");  
-	    System.out.println("Inverse Matrix bilden: [1]\n");  
-	    System.out.println("Determinante bilden: [2]\n");  
-	    System.out.println("Matrix transponieren: [3]\n");  
+	    System.out.println("Was möchtest du tun ?");  
+	    System.out.println("Inverse Matrix bilden: [1]");  
+	    System.out.println("Determinante bilden: [2]");  
+	    System.out.println("Matrix transponieren: [3]");  
 	    nextAction = scan.nextInt(); 
 
 	    switch( nextAction ){  
