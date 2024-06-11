@@ -229,7 +229,7 @@ public class Matrizenmenu {
 		leftPanel.add(printSavedMatrix);
 		
 		
-		clearSavedMatrix = new JButton("Gespeicherte Matrizen anzeigen");
+		clearSavedMatrix = new JButton("Gespeicherte Matrizen löschen");
 		clearSavedMatrix.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
 				  matrix.addConsoleTextln("\nGespeicherte Matrizen wurden gelöscht.\n");
