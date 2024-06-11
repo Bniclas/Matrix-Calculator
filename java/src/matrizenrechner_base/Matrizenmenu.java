@@ -9,11 +9,19 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 public class Matrizenmenu {
 	
+	private Vector<Matrizenrechner> savedMatrix = new Vector<Matrizenrechner>();
+	
 	private JFrame menu;
+	private JMenuBar menuBar; 
+	private JMenu mainMenu; 
+	private JMenu advancedMenu; 
 	private JTextArea consoleArea;
-	private JTextField[][] MatrixData;
+	private numericTextField[][] MatrixData;
 	private Matrizenrechner matrix;
 	private JButton runButton;
+	private JButton saveButton;
+	private JButton printSavedMatrix;
+	private JButton clearSavedMatrix;
 	private JPanel editorPanel;
 	private JCheckBox checkDeterminante;
 	private JCheckBox checkInverse;
@@ -44,8 +52,8 @@ public class Matrizenmenu {
 	     * Abfragen der Bildschirmauflösung
 	    */
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		double width = screenSize.getWidth() * 0.5;
-		double height = screenSize.getHeight() * 0.5;
+		double width = screenSize.getWidth() * 0.7;
+		double height = screenSize.getHeight() * 0.7;
 		
 		/*
 		 * Erstellen des Hauptmenüs
@@ -56,13 +64,18 @@ public class Matrizenmenu {
 		menu.setLayout( new BorderLayout() );
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		JMenuBar menuBar = new JMenuBar();
+		menu.setJMenuBar( menuBar );
+		
+		JMenu mainMenu = new JMenu("Hauptmenü");
+		menuBar.add(mainMenu);
+		
 		
 		/*
 		 * Erstellen des linken Panels
 		*/
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout( new javax.swing.BoxLayout(leftPanel, javax.swing.BoxLayout.Y_AXIS ) );
-		leftPanel.setBackground(Color.gray);
 		menu.add(leftPanel, BorderLayout.WEST);
 		
 		/*
@@ -72,8 +85,8 @@ public class Matrizenmenu {
 		rowInputLabel.setText("Zeilenzahl:");
 		leftPanel.add(rowInputLabel);
 		
-		JTextField rowInput = new JTextField();
-		rowInput.setMaximumSize( new Dimension( 25, 25 ) );
+		JTextField rowInput = new numericTextField();
+		rowInput.setMaximumSize( new Dimension( 300, 25 ) );
 		rowInput.setText("2");
 		leftPanel.add(rowInput);
 		
@@ -84,8 +97,8 @@ public class Matrizenmenu {
 		colInputLabel.setText("Spaltenzahl:");
 		leftPanel.add(colInputLabel);
 		
-		JTextField colInput = new JTextField();
-		colInput.setMaximumSize( new Dimension( 25, 25 ) );
+		JTextField colInput = new numericTextField();
+		colInput.setMaximumSize( new Dimension( 300, 25 ) );
 		colInput.setText("2");
 		leftPanel.add(colInput);
 		
@@ -97,12 +110,10 @@ public class Matrizenmenu {
 			  public void actionPerformed(ActionEvent e) { 
 				  int rows = Integer.parseInt(rowInput.getText());
 				  int cols = Integer.parseInt(colInput.getText());
-				  matrix = new Matrizenrechner( consoleArea, rows, cols );
 				  
-				  MatrixData = new JTextField[rows][cols];
+				  MatrixData = new numericTextField[rows][cols];
 				  
 				  consoleArea.append("\n----------------------------\n");
-				  matrix.printMatrix( matrix.getRows(), matrix.getColumns(), matrix.getMatrix());
 				  consoleArea.append("Du kannst die Matrix nun weiter anpassen.\n");
 				  
 				  Component[] components = editorPanel.getComponents();
@@ -117,8 +128,8 @@ public class Matrizenmenu {
 				  
 				  for( int i=0; i<rows; i++ ) {
 					  for( int j=0; j<cols; j++ ) {
-						  MatrixData[i][j] = new JTextField();
-						  MatrixData[i][j].setMaximumSize( new Dimension( 25, 25 ) );
+						  MatrixData[i][j] = new numericTextField();;
+						  MatrixData[i][j].setMaximumSize( new Dimension( 5, 5 ) );
 						  MatrixData[i][j].setText("0");
 						  editorPanel.add( MatrixData[i][j] );
 					  }
@@ -128,6 +139,9 @@ public class Matrizenmenu {
 			      checkInverse.setVisible( true );
 				  checkTransponent.setVisible( true );
 				  runButton.setVisible( true );
+				  saveButton.setVisible( true );
+				  printSavedMatrix.setVisible( true );
+				  clearSavedMatrix.setVisible( true );
 				  menu.revalidate();
 			  } 
 		});
@@ -141,9 +155,9 @@ public class Matrizenmenu {
 		checkInverse = new JCheckBox("Inverse");
 		checkTransponent = new JCheckBox("Transponieren");
 		
-		checkDeterminante.hide();
-		checkInverse.hide();
-		checkTransponent.hide();
+		checkDeterminante.setVisible( false );
+		checkInverse.setVisible( false );
+		checkTransponent.setVisible( false );
 		
 		leftPanel.add(checkDeterminante);
 		leftPanel.add(checkInverse);
@@ -152,8 +166,10 @@ public class Matrizenmenu {
 		runButton = new JButton("Berechnen");
 		runButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  int rows = matrix.getRows();
-				  int cols = matrix.getColumns();
+				  int rows = Integer.parseInt(rowInput.getText());
+				  int cols = Integer.parseInt(colInput.getText());
+				  
+				  matrix = new Matrizenrechner( consoleArea, rows, cols );
 				  
 				  for( int i=0; i<rows; i++ ) {
 					  for( int j=0; j<cols; j++ ) {
@@ -179,14 +195,54 @@ public class Matrizenmenu {
 				  }
 			  } 
 		});
-		runButton.hide();
+		runButton.setVisible( false );
 		leftPanel.add(runButton);
 		
+		JLabel optionLabel = new JLabel();
+		optionLabel.setText("Weitere Funktionalitäten: ");
+	
+		leftPanel.add(optionLabel);
+		
+		saveButton = new JButton("Speichern");
+		saveButton.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  savedMatrix.add( matrix );
+			  } 
+		});
+		saveButton.setVisible( false );
+		leftPanel.add(saveButton);
+		
+		printSavedMatrix = new JButton("Gespeicherte Matrizen anzeigen");
+		printSavedMatrix.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  matrix.addConsoleTextln("\nGespeicherte Matrizen:\n");
+				  int c = 0;
+				  for ( Matrizenrechner m : savedMatrix ) {
+					  ++c;
+					  m.addConsoleTextln( c + ". gespeicherte Matrix:");
+					  m.printMatrix( m.getRows(), m.getColumns(), m.getMatrix() );
+					  m.addConsoleTextln("");
+				  }
+			  } 
+		});
+		printSavedMatrix.setVisible( false );
+		leftPanel.add(printSavedMatrix);
+		
+		
+		clearSavedMatrix = new JButton("Gespeicherte Matrizen anzeigen");
+		clearSavedMatrix.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  matrix.addConsoleTextln("\nGespeicherte Matrizen wurden gelöscht.\n");
+				  savedMatrix.clear();
+			  } 
+		});
+		clearSavedMatrix.setVisible( false );
+		leftPanel.add(clearSavedMatrix);
+
+
 		// Rechter Panel
 		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout( new FlowLayout() );
-		rightPanel.setBackground(Color.DARK_GRAY);
-
+		rightPanel.setLayout( new BorderLayout() );
 		
 		consoleArea = new JTextArea(25, 25);
 		consoleArea.setLineWrap(true);
