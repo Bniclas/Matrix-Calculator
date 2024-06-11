@@ -119,9 +119,10 @@ public class Matrizenmenu {
 				  Component[] components = editorPanel.getComponents();
 				  
 				  for (Component component : components) {
-					  if (component.getClass().equals(JTextField.class)) {
+					  /* if (component.getClass().equals(JTextField.class)) {
 						  editorPanel.remove(component);
-					  }
+					  } */
+					  editorPanel.remove(component);
 				  }
 				  
 				  editorPanel.setLayout( new GridLayout(rows, cols) );
