@@ -1,10 +1,14 @@
+/**
+ * @autor Niclas Burger
+ * Do not copy or steal!
+ */
+
 package matrizenrechner_base;
 
 public class runMatrizenrechner {
 
 	public static void main(String[] args) {
-		Matrizenrechner mr = new Matrizenrechner();
-		mr.startMatrixCalc();
+		Matrizenmenu menu = new Matrizenmenu();
 	}
 
 }

@@ -1,15 +1,63 @@
-/*
-    WRITTEN BY NICLAS BURGER DO NOT COPY OR STEAL
-*/
+/**
+ * @autor Niclas Burger
+ * Do not copy or steal!
+ */
+
 package matrizenrechner_base;
 
-import java.util.Scanner; 
+import java.util.Scanner;
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import java.awt.*;
+import java.awt.event.*;
 
 public class Matrizenrechner {
 	
 	private int m; // Zeilenzahl
 	private int n; // Spaltenzahl
 	private float[][] matrix; // zweidimensionales Array
+	private JTextArea Console;
+	
+	public int getRows( ) {
+		return this.m;
+	}
+	
+	public int getColumns( ) {
+		return this.n;
+	}
+	
+	public float[][] getMatrix(){
+		return this.matrix;
+	}
+	
+	public void setRows( int rows ) {
+		this.m = rows;
+	}
+	
+	public void setColumns( int cols ) {
+		this.n = cols;
+	}
+	
+	public void setValue( int row, int col, float value ) {
+		this.getMatrix()[row][col] = value;
+	}
+	
+	public void addConsoleTextln( String text ) {
+		this.Console.append(text);
+		this.Console.append("\n");
+	}
+	
+	public void addConsoleText( String text ) {
+		this.Console.append(text);
+	}
+	
+	public Matrizenrechner( JTextArea console, int m, int n ) {
+		this.Console = console;
+		this.setRows( m );
+		this.setColumns( n );
+	    this.matrix = new float[m][n];
+	    this.initMatrix( this.m, this.n, matrix );  
+	}
 	
 	public void startMatrixCalc() {
 	    int finish = 0;  
@@ -19,30 +67,30 @@ public class Matrizenrechner {
 	    
 	    Scanner scan = new Scanner( System.in );
 	    
-	    System.out.println("Bitte geben Sie die Zeilenzahl Ihrer Matrix an!");  
+	    addConsoleTextln("Bitte geben Sie die Zeilenzahl Ihrer Matrix an!");  
 	    this.m = scan.nextInt();
 
-	    System.out.println("Bitte geben Sie die Spaltenzahl Ihrer Matrix an!");  
+	    addConsoleTextln("Bitte geben Sie die Spaltenzahl Ihrer Matrix an!");  
 	    this.n = scan.nextInt(); 
 	    
 	    matrix = new float[m][n];
 	    this.initMatrix( this.m, this.n, matrix );  
 
 	    do {  
-	    	System.out.println("Möchtest du noch einen Wert angeben? 0 = nein; 0<x>0 = ja");  
+	    	addConsoleTextln("Möchtest du noch einen Wert angeben? 0 = nein; 0<x>0 = ja");  
 	    	finish = scan.nextInt();
 
 	        if ( finish == 0 ){  
 	            break;  
 	        }  
 
-	        System.out.println("Zeile:");  
+	        addConsoleTextln("Zeile:");  
 	        overwriteM = scan.nextInt();
 
-	        System.out.println("Spalte:");  
+	        addConsoleTextln("Spalte:");  
 	        overwriteN = scan.nextInt();
 
-	        System.out.println("Wert:");  
+	        addConsoleTextln("Wert:");  
 	        overwriteValue = scan.nextInt(); 
 
 	        // Wir müssen noch die Zeilen- und Spaltenindizes um den Wert 1 subtrahieren,   
@@ -51,23 +99,26 @@ public class Matrizenrechner {
 	    } while( finish != 0 );  
 
 
-	    System.out.println("--------------------\nMatrix:");  
+	    addConsoleTextln("--------------------\nMatrix:");  
 	    this.printMatrix( this.m, this.n, this.matrix );  
 
-	    System.out.println("--------------------\nNächste Aktion:");  
+	    addConsoleTextln("--------------------\nNächste Aktion:");  
 	    int nextAction;  
 
 
-	    System.out.println("Was möchtest du tun ?");  
-	    System.out.println("Inverse Matrix bilden: [1]");  
-	    System.out.println("Determinante bilden: [2]");  
-	    System.out.println("Matrix transponieren: [3]");  
+	    addConsoleTextln("Was möchtest du tun ?");  
+	    addConsoleTextln("Inverse Matrix bilden: [1]");  
+	    addConsoleTextln("Determinante bilden: [2]");  
+	    addConsoleTextln("Matrix transponieren: [3]");  
 	    nextAction = scan.nextInt(); 
 
 	    switch( nextAction ){  
-	        case 1: this.getInverse( this.m, this.n, this.matrix ); break;  
-	        case 2: System.out.println("Die Determinante beträgt = %.2f" + this.getDeterminant( this.m, this.n, this.matrix ) ); break;  
-	        case 3: this.getTransponiert( this.m, this.n, this.matrix ); System.out.println("Transponierte Matrix: \n"); this.printMatrix( this.m, this.n, this.matrix ); break;
+	        case 1: this.getInverse( ); break;  
+	        case 2: addConsoleTextln("Die Determinante beträgt = %.2f" + this.getDeterminant( this.m, this.n, this.matrix ) ); break;  
+	        case 3: {
+	        	addConsoleTextln("Transponierte Matrix: \n"); this.printMatrix( this.m, this.n, this.getTransponiert( this.m, this.n, this.matrix )); 
+	        	break;
+	        }
 	        default: break;
 	    }  
 	    
@@ -77,14 +128,14 @@ public class Matrizenrechner {
 	public void printMatrix( int m, int n, float matrix[][] ){  
 	    int i,j;  
 	    for( i=0; i<m; i++ ){  
-	        System.out.print("[ ");  
+	        addConsoleText("[ ");  
 	        for( j=0; j<n; j++ ){  
-	            System.out.print( "" + matrix[i][j] );  
+	            addConsoleText( String.format("%.02f", matrix[i][j]) );  
 	            if ( j<n-1 ) {
-	            	System.out.print(" | ");
+	            	addConsoleText(" | ");
 	            }
 	        }  
-	        System.out.print(" ]\n");  
+	        addConsoleText(" ]\n");  
 	    }  
 	}  
 
@@ -140,22 +191,22 @@ public class Matrizenrechner {
 	                startIndexN += 1;
 	                diagonalSum += diagonalMult;
 	                /*
-	                	System.out.println("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
+	                	addConsoleTextln("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
 	                */
 	                diagonalMult = 1;
 	            }
 	            else {
 	                diagonalMult *= matrix[j][startIndexN+j];
 	                /*
-	                	System.out.println("Wert: x(%i|%i) = %.2f\n", j, startIndexN+j, matrix[j][startIndexN+j]);
+	                	addConsoleTextln("Wert: x(%i|%i) = %.2f\n", j, startIndexN+j, matrix[j][startIndexN+j]);
 	                */
 	            }
 	        }   
 	    }
 	    
 	    /*
-	    	System.out.println("Werte der Diagonalen von links oben nach rechts unten: %.2f\n", diagonalSum);
-	    	System.out.println("-----------------------------\n");
+	    	addConsoleTextln("Werte der Diagonalen von links oben nach rechts unten: %.2f\n", diagonalSum);
+	    	addConsoleTextln("-----------------------------\n");
 	    */
 	    
 	    
@@ -178,21 +229,21 @@ public class Matrizenrechner {
 	                startIndexN -= 1;
 	                diagonalSum += diagonalMult;
 	                /*
-	                	System.out.println("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
+	                	addConsoleTextln("Ergebnis der Diagonale %i : %.2f\n", startIndexN, diagonalMult );
 	                */
 	                diagonalMult = 1;
 	            }
 	            else {
 	                diagonalMult *= matrix[j][startIndexN-j];
 	                /*
-	                	System.out.println("Wert: x(%i|%i) = %.2f\n", j, startIndexN-j, matrix[j][startIndexN-j]);
+	                	addConsoleTextln("Wert: x(%i|%i) = %.2f\n", j, startIndexN-j, matrix[j][startIndexN-j]);
 	                */
 	            }
 	        }   
 	    }
 	    /*
-	    	System.out.println("Werte der Diagonalen von rechts oben nach links unten: %.2f\n", diagonalSum);
-	    	System.out.println("-----------------------------\n");
+	    	addConsoleTextln("Werte der Diagonalen von rechts oben nach links unten: %.2f\n", diagonalSum);
+	    	addConsoleTextln("-----------------------------\n");
 	    */
 	    
 	    float determinante = saveSum - diagonalSum;
@@ -207,7 +258,7 @@ public class Matrizenrechner {
 
 	    //  Für nicht quadratische Matrizen keine Definierte Lösung
 	    if ( this.isQuadratic( m, n ) == 0 ){  
-	        System.out.println("Leider ist das keine Quadratiche Matrix : Aufgabe beendet!\n");  
+	        addConsoleTextln("Leider ist das keine Quadratiche Matrix : Aufgabe beendet!\n");  
 	        return 0;  
 	    }  
 
@@ -243,7 +294,7 @@ public class Matrizenrechner {
 
 	        /*
 	        // Die Matrix ausgeben  
-	        System.out.println("--------------------\nDeterminantenmatrix:\n");  
+	        addConsoleTextln("--------------------\nDeterminantenmatrix:\n");  
 	        printMatrix( m, n+newColumns, newMatrix );  
 	        */
 	    
@@ -255,7 +306,7 @@ public class Matrizenrechner {
 	}  
 
 
-	public void getTransponiert( int m, int n, float matrix[][] ){  
+	public float[][] getTransponiert( int m, int n, float matrix[][] ){  
 	    float matrixT[][] = new float[n][m];
 	    this.initMatrix( n, m, matrixT );
 	    
@@ -271,26 +322,25 @@ public class Matrizenrechner {
 	        }
 	    }
 	    
-	    /*
-		    System.out.println("----------------------------\n");
-		    System.out.println("Transponierte Matrix: \n");
-		    this.printMatrix( n, m, matrixT );
-		    System.out.println("----------------------------\n");
-	    */
-
+	    return matrixT;
 	}  
 
 	  
-	public float getInverse( int m, int n, float matrix[][] ){  
+	public float getInverse(){  
+		int m = this.getRows();
+		int n = this.getColumns();
+		float[][] matrix = this.getMatrix();
+		
+		
 	    if ( this.isQuadratic( m, n ) == 0 ){  
-	        System.out.println("Leider ist das keine Quadratiche Matrix : Aufgabe beendet!\n");  
+	        addConsoleTextln("Leider ist das keine Quadratiche Matrix : Aufgabe beendet!\n");  
 	        return 0;  
 	    }  
 	    
 	    float detA = this.getDeterminant( m, n, matrix );
 	    
 	    if( detA == 0 ){
-	        System.out.println("Es kann keine Inverse dieser Matrix gebildet werden, da die Determinante 0 beträgt.");
+	        addConsoleTextln("Es kann keine Inverse dieser Matrix gebildet werden, da die Determinante 0 beträgt.");
 	        return 0;
 	    }
 	    
@@ -306,8 +356,6 @@ public class Matrizenrechner {
 	        inverseMatrix[0][1] = x*matrix[1][0];
 	        inverseMatrix[1][0] = x*matrix[0][1];
 	        
-	        System.out.println("----------------------------\n");
-	        System.out.println("Die Inverse ist: \n");
 	        this.printMatrix( m, n, inverseMatrix );
 	    }
 	    else {
@@ -327,7 +375,7 @@ public class Matrizenrechner {
 	        // Wir loopen für jede Zeile m-mal durch die komplette Matrix
 	        while( counter < m * m ){
 	            
-	            //System.out.println("Durchlauf: %i\n", counter+1);
+	            //addConsoleTextln("Durchlauf: %i\n", counter+1);
 	            for(x=0;x<m;x++){
 	                for(y=0;y<m;y++){
 	                    if(x==row || y==col){
@@ -351,16 +399,16 @@ public class Matrizenrechner {
 	                        }
 	                    }
 	                    
-	                    //System.out.println("x: %i y:%i \n", x, y);
+	                    //addConsoleTextln("x: %i y:%i \n", x, y);
 	                }   
 	            }
 	            // Am Ende des Durchlaufs setzen wir die Submatrix zurück und setzten an den Spalten- sowie Zeilenindex des aktuellen Durchlaufs die Determinante der Submatrix
 	            adjMatrix[row][col] = getDeterminant(m-1,n-1,subMatrix);
 	            
 	            /*
-	            System.out.println("Submatrix von r: %i c: %i: \n", row, col);
+	            addConsoleTextln("Submatrix von r: %i c: %i: \n", row, col);
 	            printMatrix( m-1, n-1, subMatrix);
-	            System.out.println("Determinante der Submatrix: %.2f \n\n", adjMatrix[row][col] );
+	            addConsoleTextln("Determinante der Submatrix: %.2f \n\n", adjMatrix[row][col] );
 	            */
 	            
 	            this.initMatrix( m-1, n-1, subMatrix );
@@ -411,12 +459,8 @@ public class Matrizenrechner {
 	        
 	        // Ausgabe der Matrix
 	        
-	        System.out.println("----------------------------\n");
-	        //System.out.println("Die Determinante ist: %.2f \n", detA);
-	        System.out.println("Die Inverse ist: \n");
-	        
 	        this.multMatrixWithFactor( m, n, adjMatrix, 1/detA);
-	        this.getTransponiert( m, n, adjMatrix);
+	        this.getTransponiert( m, n, adjMatrix );
 	        this.printMatrix( m, n, adjMatrix );
 
 	    }
