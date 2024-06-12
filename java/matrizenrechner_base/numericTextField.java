@@ -12,14 +12,14 @@ public class numericTextField extends JTextField {
     public numericTextField() {
         super();
     }
-	/*
+
     @Override
     public void processKeyEvent(KeyEvent e) {
-        if (Character.isDigit(e.getKeyChar())) {
+        if ( Character.isDigit(e.getKeyChar()) || e.getKeyChar() == '-' ) {
             super.processKeyEvent(e);
         }
         e.consume();
         return;
     }
-	*/
+
 }

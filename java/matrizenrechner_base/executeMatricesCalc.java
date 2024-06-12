@@ -5,7 +5,7 @@
 
 package matrizenrechner_base;
 
-public class runMatrizenrechner {
+public class executeMatricesCalc {
 
 	public static void main(String[] args) {
 		MatrizenMenuRemake menu = new MatrizenMenuRemake();

@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 public class MatrizenMenuRemake {
 	
-	private Vector<Matrizenrechner> savedMatrices = new Vector<Matrizenrechner>();
+	private static Vector<Matrizenrechner> savedMatrices = new Vector<Matrizenrechner>();
 	private static numericTextField[][] MatrixData;
 	private static Matrizenrechner matrix;
 	
@@ -18,6 +18,8 @@ public class MatrizenMenuRemake {
 	private static JMenuBar menuBar; 
 	private static JMenu mainMenu; 
 	private static JTextArea Console;
+	private static JTextField rowInput;
+	private static JTextField colInput;
 	private static JLabel calcOptionsText;
 	private static JButton createMatrixButton;
 	private static JPanel matrixEditor;
@@ -30,8 +32,8 @@ public class MatrizenMenuRemake {
 	private static JButton clearSavedMatrix;
 	private static JLabel chooseALabel;
 	private static JLabel chooseBLabel;
-	private static JComboBox selectionA;
-	private static JComboBox selectionB;
+	private static JComboBox<Integer> selectionA;
+	private static JComboBox<Integer> selectionB;
 	private static JButton addMatricesButton;
 	private static JButton subMatricesButton;
 	private static JButton multMatricesButton;
@@ -41,8 +43,47 @@ public class MatrizenMenuRemake {
 		Console.append("\n");
 	}
 	
-	public JTextArea getConsole() {
+	public static JTextArea getConsole() {
 		return Console;
+	}
+	
+	public static Matrizenrechner getMatrixA() {
+		if ( selectionA.getSelectedItem() == null ) {
+			return null;
+		}
+		return savedMatrices.get( (int)selectionA.getSelectedItem() - 1 );
+	}
+	
+	public static boolean bothMatricesValid() {
+		if ( getMatrixA() == null && getMatrixB() == null ) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static Matrizenrechner getMatrixB() {
+		if ( selectionB.getSelectedItem() == null ) {
+			return null;
+		}
+		return savedMatrices.get( (int)selectionB.getSelectedItem() - 1 );
+	}
+	
+	public static Matrizenrechner getMenuMatrix() {
+		if ( MatrixData == null || MatrixData[0][0] == null) {
+			return null;
+		}
+		int rows = Integer.parseInt(rowInput.getText());
+		int cols = Integer.parseInt(colInput.getText());
+		  
+		matrix = new Matrizenrechner( Console, rows, cols );
+		  
+		for( int i=0; i<rows; i++ ) {
+			for( int j=0; j<cols; j++ ) {
+				matrix.setValue( i, j, Float.parseFloat(MatrixData[i][j].getText()) );
+			}
+		}
+		  
+		return matrix;
 	}
 
 	public MatrizenMenuRemake() {
@@ -78,9 +119,9 @@ public class MatrizenMenuRemake {
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		menu.setVisible( true );
 		
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		menu.setJMenuBar( menuBar );
-		JMenu mainMenu = new JMenu("Hauptmenü");
+		mainMenu = new JMenu("Hauptmenü");
 		menuBar.add(mainMenu);
 		
 		mainConstraint.gridx = 0;
@@ -115,7 +156,7 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 0;
 		leftMainPanel.add( rowLabel, leftConstraint );
 		
-		JTextField rowInput = new numericTextField();
+		rowInput = new numericTextField();
 		rowInput.setText("2");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 0;
@@ -126,7 +167,7 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 1;
 		leftMainPanel.add( colLabel, leftConstraint );
 		
-		JTextField colInput = new numericTextField();
+		colInput = new numericTextField();
 		colInput.setText("2");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 1;
@@ -206,18 +247,13 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 7;
 		runButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  int rows = Integer.parseInt(rowInput.getText());
-				  int cols = Integer.parseInt(colInput.getText());
 				  
-				  matrix = new Matrizenrechner( Console, rows, cols );
-				  
-				  for( int i=0; i<rows; i++ ) {
-					  for( int j=0; j<cols; j++ ) {
-						  matrix.setValue( i, j, Float.parseFloat(MatrixData[i][j].getText()) );
-					  }
+				  if (getMenuMatrix() == null) {
+					  return;
 				  }
 				  
-				  matrix.addConsoleTextln("<<<<<< BERECHNUNGEN >>>>>>");
+				  int rows = getMenuMatrix().getRows();
+				  int cols = getMenuMatrix().getColumns();
 				  
 				  if ( checkDeterminante.isSelected() ) {
 					  matrix.addConsoleText("Die Determinante beträgt: ");
@@ -243,11 +279,9 @@ public class MatrizenMenuRemake {
 		saveButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
 				  
-				  selectionA.setVisible( true );
-				  selectionB.setVisible( true );
-				  addMatricesButton.setVisible( true );
-				  subMatricesButton.setVisible( true );
-				  multMatricesButton.setVisible( true );
+				  if (getMenuMatrix() == null) {
+					  return;
+				  }
 				  
 				  savedMatrices.add( matrix );
 				  
@@ -264,11 +298,11 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 9;
 		printSavedMatrix.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  matrix.addConsoleTextln("\nGespeicherte Matrizen:\n");
+				  addConsoleText("\nGespeicherte Matrizen:\n");
 				  int c = 0;
 				  for ( Matrizenrechner m : savedMatrices ) {
 					  ++c;
-					  m.addConsoleTextln( c + ". gespeicherte Matrix:");
+					  addConsoleText( c + ". gespeicherte Matrix:\n");
 					  m.printMatrix( m.getRows(), m.getColumns(), m.getMatrix() );
 					  m.addConsoleTextln("");
 				  }
@@ -282,7 +316,7 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 10;
 		clearSavedMatrix.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  matrix.addConsoleTextln("\nGespeicherte Matrizen wurden gelöscht.\n");
+				  addConsoleText("\nGespeicherte Matrizen wurden gelöscht.\n");
 				  savedMatrices.clear();
 				  
 				  selectionA.removeAllItems();
@@ -307,12 +341,12 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 12;
 		leftMainPanel.add(chooseBLabel, leftConstraint);
 		
-		selectionA = new JComboBox();
+		selectionA = new JComboBox<Integer>();
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 13;
 		leftMainPanel.add(selectionA, leftConstraint);
 		
-		selectionB = new JComboBox();
+		selectionB = new JComboBox<Integer>();
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 13;
 		leftMainPanel.add(selectionB, leftConstraint);
@@ -323,8 +357,11 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 14;
 		addMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner A = savedMatrices.get( (int)selectionA.getSelectedItem() - 1 );
-				  Matrizenrechner B = savedMatrices.get( (int)selectionB.getSelectedItem() - 1 );
+				  Matrizenrechner A = getMatrixA();
+				  Matrizenrechner B = getMatrixB();
+				  if ( bothMatricesValid() == false ) {
+					  return;
+				  }
 				  Matrizenrechner C = Matrizenrechner.addMatrices( Console, A, B);
 				  
 				  int rowsC = C.getRows();
@@ -340,8 +377,11 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 14;
 		subMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner A = savedMatrices.get( (int)selectionA.getSelectedItem() - 1 );
-				  Matrizenrechner B = savedMatrices.get( (int)selectionB.getSelectedItem() - 1 );
+				  Matrizenrechner A = getMatrixA();
+				  Matrizenrechner B = getMatrixB();
+				  if ( bothMatricesValid() == false ) {
+					  return;
+				  }
 				  Matrizenrechner C = Matrizenrechner.subMatrices( Console, A, B);
 				  
 				  int rowsC = C.getRows();
@@ -357,8 +397,11 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 15;
 		multMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner A = savedMatrices.get( (int)selectionA.getSelectedItem() - 1 );
-				  Matrizenrechner B = savedMatrices.get( (int)selectionB.getSelectedItem() - 1 );
+				  Matrizenrechner A = getMatrixA();
+				  Matrizenrechner B = getMatrixB();
+				  if ( bothMatricesValid() == false ) {
+					  return;
+				  }
 				  Matrizenrechner C = Matrizenrechner.multiplyMatrices( Console, A, B);
 				  
 				  int rowsC = C.getRows();
