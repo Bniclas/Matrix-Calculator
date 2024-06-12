@@ -300,7 +300,9 @@ public class Matrizenmenu {
 		subMatricesButton = new JButton("Matrizen subtrahieren");
 		subMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner C = Matrizenrechner.subMatrices( consoleArea, savedMatrix.get(0), savedMatrix.get(1));
+				  Matrizenrechner A = savedMatrix.get( (int)selectionA.getSelectedItem() - 1 );
+				  Matrizenrechner B = savedMatrix.get( (int)selectionB.getSelectedItem() - 1);
+				  Matrizenrechner C = Matrizenrechner.subMatrices( consoleArea, A, B);
 				  
 				  int rowsC = C.getRows();
 				  int colsC = C.getColumns();
@@ -314,7 +316,9 @@ public class Matrizenmenu {
 		multMatricesButton = new JButton("Matrizen multiplizieren");
 		multMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner C = Matrizenrechner.multiplyMatrices( consoleArea, savedMatrix.get(0), savedMatrix.get(1));
+				  Matrizenrechner A = savedMatrix.get( (int)selectionA.getSelectedItem() - 1 );
+				  Matrizenrechner B = savedMatrix.get( (int)selectionB.getSelectedItem() - 1);
+				  Matrizenrechner C = Matrizenrechner.multiplyMatrices( consoleArea, A, B);
 				  
 				  int rowsC = C.getRows();
 				  int colsC = C.getColumns();
