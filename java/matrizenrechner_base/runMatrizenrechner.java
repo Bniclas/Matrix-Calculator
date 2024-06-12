@@ -8,7 +8,7 @@ package matrizenrechner_base;
 public class runMatrizenrechner {
 
 	public static void main(String[] args) {
-		Matrizenmenu menu = new Matrizenmenu();
+		MatrizenMenuRemake menu = new MatrizenMenuRemake();
 	}
 
 }
