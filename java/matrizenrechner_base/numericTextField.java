@@ -12,7 +12,7 @@ public class numericTextField extends JTextField {
     public numericTextField() {
         super();
     }
-	
+	/*
     @Override
     public void processKeyEvent(KeyEvent e) {
         if (Character.isDigit(e.getKeyChar())) {
@@ -21,5 +21,5 @@ public class numericTextField extends JTextField {
         e.consume();
         return;
     }
-	
+	*/
 }

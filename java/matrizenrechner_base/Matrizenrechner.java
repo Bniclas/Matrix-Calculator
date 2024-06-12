@@ -5,11 +5,7 @@
 
 package matrizenrechner_base;
 
-import java.util.Scanner;
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
-import java.awt.*;
-import java.awt.event.*;
 
 public class Matrizenrechner {
 	
@@ -42,6 +38,10 @@ public class Matrizenrechner {
 		this.getMatrix()[row][col] = value;
 	}
 	
+	public float getValue( int row, int col ) {
+		return this.getMatrix()[row][col];
+	}
+	
 	public void addConsoleTextln( String text ) {
 		this.Console.append(text);
 		this.Console.append("\n");
@@ -59,72 +59,6 @@ public class Matrizenrechner {
 	    this.initMatrix( this.m, this.n, matrix );  
 	}
 	
-	public void startMatrixCalc() {
-	    int finish = 0;  
-	    int overwriteM;  
-	    int overwriteN; 
-	    float overwriteValue;  
-	    
-	    Scanner scan = new Scanner( System.in );
-	    
-	    addConsoleTextln("Bitte geben Sie die Zeilenzahl Ihrer Matrix an!");  
-	    this.m = scan.nextInt();
-
-	    addConsoleTextln("Bitte geben Sie die Spaltenzahl Ihrer Matrix an!");  
-	    this.n = scan.nextInt(); 
-	    
-	    matrix = new float[m][n];
-	    this.initMatrix( this.m, this.n, matrix );  
-
-	    do {  
-	    	addConsoleTextln("Möchtest du noch einen Wert angeben? 0 = nein; 0<x>0 = ja");  
-	    	finish = scan.nextInt();
-
-	        if ( finish == 0 ){  
-	            break;  
-	        }  
-
-	        addConsoleTextln("Zeile:");  
-	        overwriteM = scan.nextInt();
-
-	        addConsoleTextln("Spalte:");  
-	        overwriteN = scan.nextInt();
-
-	        addConsoleTextln("Wert:");  
-	        overwriteValue = scan.nextInt(); 
-
-	        // Wir müssen noch die Zeilen- und Spaltenindizes um den Wert 1 subtrahieren,   
-	        // damit wir die Indizes des Arrays erhalten  
-	        matrix[overwriteM-1][overwriteN-1] = overwriteValue;  
-	    } while( finish != 0 );  
-
-
-	    addConsoleTextln("--------------------\nMatrix:");  
-	    this.printMatrix( this.m, this.n, this.matrix );  
-
-	    addConsoleTextln("--------------------\nNächste Aktion:");  
-	    int nextAction;  
-
-
-	    addConsoleTextln("Was möchtest du tun ?");  
-	    addConsoleTextln("Inverse Matrix bilden: [1]");  
-	    addConsoleTextln("Determinante bilden: [2]");  
-	    addConsoleTextln("Matrix transponieren: [3]");  
-	    nextAction = scan.nextInt(); 
-
-	    switch( nextAction ){  
-	        case 1: this.getInverse( ); break;  
-	        case 2: addConsoleTextln("Die Determinante beträgt = %.2f" + this.getDeterminant( this.m, this.n, this.matrix ) ); break;  
-	        case 3: {
-	        	addConsoleTextln("Transponierte Matrix: \n"); this.printMatrix( this.m, this.n, this.getTransponiert( this.m, this.n, this.matrix )); 
-	        	break;
-	        }
-	        default: break;
-	    }  
-	    
-	    scan.close();
-	}
-	
 	public void printMatrix( int m, int n, float matrix[][] ){  
 	    int i,j;  
 	    for( i=0; i<m; i++ ){  
@@ -138,6 +72,90 @@ public class Matrizenrechner {
 	        addConsoleText(" ]\n");  
 	    }  
 	}  
+	
+	public static Matrizenrechner subMatrices( JTextArea Console, Matrizenrechner A, Matrizenrechner B ){
+		int rowsA = A.getRows();
+		int rowsB = A.getRows();
+		int colsA = A.getColumns();
+		int colsB = B.getColumns();
+		
+		int rowsC = rowsA;
+		int colsC = colsB;
+		
+		if ( colsA != colsB && rowsA != rowsB ) {
+			A.addConsoleTextln("Subtraktion kann nicht durchgeführt werden.");  
+			return new Matrizenrechner( Console, 0, 0 );
+		}
+		
+		Matrizenrechner C = new Matrizenrechner( Console, rowsC, colsC );
+		
+		for( int i=0; i<rowsC; i++ ) {
+			for( int j=0; j<colsC; j++ ) {
+				C.setValue(i, j, ( A.getMatrix()[i][j] - B.getMatrix()[i][j] ) ); 
+			}
+		}
+		
+		return C;
+	}
+	
+	public static Matrizenrechner addMatrices( JTextArea Console, Matrizenrechner A, Matrizenrechner B ){
+		int rowsA = A.getRows();
+		int rowsB = A.getRows();
+		int colsA = A.getColumns();
+		int colsB = B.getColumns();
+		
+		int rowsC = rowsA;
+		int colsC = colsB;
+		
+		if ( colsA != colsB && rowsA != rowsB ) {
+			A.addConsoleTextln("Addition kann nicht durchgeführt werden.");  
+			return new Matrizenrechner( Console, 0, 0 );
+		}
+		
+		Matrizenrechner C = new Matrizenrechner( Console, rowsC, colsC );
+		
+		for( int i=0; i<rowsC; i++ ) {
+			for( int j=0; j<colsC; j++ ) {
+				C.setValue(i, j, ( A.getMatrix()[i][j] + B.getMatrix()[i][j] ) ); 
+			}
+		}
+		
+		return C;
+	}
+	
+	public static Matrizenrechner multiplyMatrices( JTextArea Console, Matrizenrechner A, Matrizenrechner B ){
+		int rowsA = A.getRows();
+		int rowsB = A.getRows();
+		int colsA = A.getColumns();
+		int colsB = B.getColumns();
+		
+		int rowsC = rowsA;
+		int colsC = colsB;
+		
+		if ( colsA != rowsB ) {
+			A.addConsoleTextln("Multiplikation kann nicht durchgeführt werden.");  
+			return new Matrizenrechner( Console, 0, 0 );
+		}
+		
+		
+		Matrizenrechner C = new Matrizenrechner( Console, rowsC, colsC );
+
+				
+		// Matrix A loop through
+		for ( int i=0; i<rowsA; i++ ) {
+			for( int j=0; j<colsA; j++ ) {
+				
+				// Matrix B loop 
+				for( int l=0; l<colsB; l++ ) {
+					float valueC = A.getValue(i, j) * B.getValue(j, l);
+					C.setValue( i, l, C.getValue(i,l) + valueC );
+				}
+				
+			}
+		}
+				
+		return C;
+	}
 
 	public void multMatrixWithFactor( int m, int n, float matrix[][], float factor ){
 	    int i,j;  

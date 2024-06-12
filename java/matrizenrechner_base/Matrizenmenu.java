@@ -20,8 +20,13 @@ public class Matrizenmenu {
 	private Matrizenrechner matrix;
 	private JButton runButton;
 	private JButton saveButton;
+	private JComboBox<Integer> selectionA;
+	private JComboBox selectionB;
 	private JButton printSavedMatrix;
 	private JButton clearSavedMatrix;
+	private JButton addMatricesButton;
+	private JButton subMatricesButton;
+	private JButton multMatricesButton;
 	private JPanel editorPanel;
 	private JCheckBox checkDeterminante;
 	private JCheckBox checkInverse;
@@ -30,6 +35,10 @@ public class Matrizenmenu {
 	public void addConsoleText( String text ) {
 		this.consoleArea.append(text);
 		this.consoleArea.append("\n");
+	}
+	
+	public JTextArea getConsole() {
+		return this.consoleArea;
 	}
 	
 	public Matrizenmenu() {
@@ -143,6 +152,7 @@ public class Matrizenmenu {
 				  saveButton.setVisible( true );
 				  printSavedMatrix.setVisible( true );
 				  clearSavedMatrix.setVisible( true );
+				  
 				  menu.revalidate();
 			  } 
 		});
@@ -207,7 +217,19 @@ public class Matrizenmenu {
 		saveButton = new JButton("Speichern");
 		saveButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
+				  
+				  selectionA.setVisible( true );
+				  selectionB.setVisible( true );
+				  addMatricesButton.setVisible( true );
+				  subMatricesButton.setVisible( true );
+				  multMatricesButton.setVisible( true );
+				  
 				  savedMatrix.add( matrix );
+				  
+				  for (int i=0; i<savedMatrix.size(); i++ ) {
+					  selectionA.addItem(i+1);
+					  selectionB.addItem(i+1);
+				  }
 			  } 
 		});
 		saveButton.setVisible( false );
@@ -235,10 +257,74 @@ public class Matrizenmenu {
 			  public void actionPerformed(ActionEvent e) { 
 				  matrix.addConsoleTextln("\nGespeicherte Matrizen wurden gelöscht.\n");
 				  savedMatrix.clear();
+				  
+				  selectionA.removeAllItems();
+				  selectionB.removeAllItems();
+				  
+				  addMatricesButton.setVisible( false );
+				  subMatricesButton.setVisible( false );
+				  multMatricesButton.setVisible( false );
+				  selectionA.setVisible( false );
+				  selectionB.setVisible( false );
 			  } 
 		});
 		clearSavedMatrix.setVisible( false );
 		leftPanel.add(clearSavedMatrix);
+		
+		selectionA = new JComboBox();
+		selectionA.setMaximumSize( new Dimension( 200, 20) );
+		selectionA.setVisible( false );
+		leftPanel.add(selectionA);
+		
+		selectionB = new JComboBox();
+		selectionB.setMaximumSize( new Dimension( 200, 20) );
+		selectionB.setVisible( false );
+		leftPanel.add(selectionB);
+		
+		addMatricesButton = new JButton("Matrizen addieren");
+		addMatricesButton.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  Matrizenrechner A = savedMatrix.get( (int)selectionA.getSelectedItem() - 1 );
+				  Matrizenrechner B = savedMatrix.get( (int)selectionB.getSelectedItem() - 1);
+				  Matrizenrechner C = Matrizenrechner.addMatrices( consoleArea, A, B);
+				  
+				  int rowsC = C.getRows();
+				  int colsC = C.getColumns();
+				  
+				  C.printMatrix( rowsC, colsC, C.getMatrix() );
+			  } 
+		});
+		addMatricesButton.setVisible( false );
+		leftPanel.add(addMatricesButton);
+		
+		subMatricesButton = new JButton("Matrizen subtrahieren");
+		subMatricesButton.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  Matrizenrechner C = Matrizenrechner.subMatrices( consoleArea, savedMatrix.get(0), savedMatrix.get(1));
+				  
+				  int rowsC = C.getRows();
+				  int colsC = C.getColumns();
+				  
+				  C.printMatrix( rowsC, colsC, C.getMatrix() );
+			  } 
+		});
+		subMatricesButton.setVisible( false );
+		leftPanel.add(subMatricesButton);
+		
+		multMatricesButton = new JButton("Matrizen multiplizieren");
+		multMatricesButton.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  Matrizenrechner C = Matrizenrechner.multiplyMatrices( consoleArea, savedMatrix.get(0), savedMatrix.get(1));
+				  
+				  int rowsC = C.getRows();
+				  int colsC = C.getColumns();
+				  
+				  C.printMatrix( rowsC, colsC, C.getMatrix() );
+			  } 
+		});
+		multMatricesButton.setVisible( false );
+		leftPanel.add(multMatricesButton);
+
 
 
 		// Rechter Panel
