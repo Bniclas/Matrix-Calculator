@@ -16,15 +16,15 @@ Wer verwaltet das Projekt und trägt dazu bei?
 
 ## How to use it ?
 
-[Documentation]
+### [Documentation]
 If you need some documentation you find it in the java/documentation folder when opening the index.html file to get information about 
 any specififc method or class.
 
-[Code]
+### [Code]
 If you only want to study my code you can find it in the c/*.c folder as well as in the java/code/... folder.
 You should know that the project probably is only going to be updated in Java.
 
-[Use the calculator]
+### [Use the calculator]
 In the java-folder you can find a executable .jar file which you can download and execute.
 
 >[!NOTE]
