@@ -119,7 +119,7 @@ public class Matrix {
 		int colsC = colsB;
 		
 		if ( colsA != colsB && rowsA != rowsB ) {
-			A.addConsoleTextln("Subtraktion kann nicht durchgeführt werden.");  
+			A.addConsoleTextln("Subtraction cannot be performed!");  
 			return new Matrix( Console, 0, 0 );
 		}
 		
@@ -147,7 +147,7 @@ public class Matrix {
 		int colsC = colsB;
 		
 		if ( colsA != colsB && rowsA != rowsB ) {
-			A.addConsoleTextln("Addition kann nicht durchgeführt werden.");  
+			A.addConsoleTextln("Addition cannot be performed!");  
 			return new Matrix( Console, 0, 0 );
 		}
 		
@@ -175,7 +175,7 @@ public class Matrix {
 		int colsC = colsB;
 		
 		if ( colsA != rowsB ) {
-			A.addConsoleTextln("Multiplikation kann nicht durchgeführt werden.");  
+			A.addConsoleTextln("Multiplication cannot be performed!");  
 			return new Matrix( Console, 0, 0 );
 		}
 		
@@ -330,7 +330,7 @@ public class Matrix {
 
 	    //  Für nicht quadratische Matrizen keine Definierte Lösung
 	    if ( this.isQuadratic( m, n ) == 0 ){  
-	        addConsoleTextln("Leider ist das keine Quadratiche Matrix : Aufgabe beendet!\n");  
+	        addConsoleTextln("Matrix is not quadratic. Determinant can not be performed!\n");  
 	        return 0;  
 	    }  
 
@@ -409,14 +409,14 @@ public class Matrix {
 		
 		
 	    if ( this.isQuadratic( m, n ) == 0 ){  
-	        addConsoleTextln("Leider ist das keine Quadratiche Matrix : Aufgabe beendet!\n");  
+	        addConsoleTextln("Matrix is not quadratic. Inverse not possible to calculate!\n");  
 	        return 0;  
 	    }  
 	    
 	    float detA = this.getDeterminant( m, n, matrix );
 	    
 	    if( detA == 0 ){
-	        addConsoleTextln("Es kann keine Inverse dieser Matrix gebildet werden, da die Determinante 0 beträgt.");
+	        addConsoleTextln("Determinant is 0, there cannot be an inverse.");
 	        return 0;
 	    }
 	    
