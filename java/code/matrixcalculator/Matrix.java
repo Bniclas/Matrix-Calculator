@@ -3,15 +3,15 @@
  * Do not copy or steal!
  */
 
-package matrizenrechner_base;
+package matrixcalculator;
 
 import javax.swing.*;
 
 public class Matrix {
 	
-	private int m; // Zeilenzahl
-	private int n; // Spaltenzahl
-	private float[][] matrix; // zweidimensionales Array
+	private int m; // Rows
+	private int n; // Columns
+	private float[][] matrix; // Twodimensional float Array
 	private JTextArea Console;
 	
 	/**

@@ -1,4 +1,4 @@
-package matrizenrechner_base;
+package matrixcalculator;
 
 import java.awt.event.*;
 import javax.swing.*;

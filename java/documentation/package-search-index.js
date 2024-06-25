@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"Alle Packages","u":"allpackages-index.html"},{"l":"matrizenrechner_base"}];updateSearchResults();
+packageSearchIndex = [{"l":"Alle Packages","u":"allpackages-index.html"},{"l":"matrixcalculator"}];updateSearchResults();

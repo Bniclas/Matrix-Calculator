@@ -1,4 +1,4 @@
-package matrizenrechner_base;
+package matrixcalculator;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
 
-public class MatrizenMenuRemake {
+public class MatrixMenu {
 	
 	private static Vector<Matrix> savedMatrices = new Vector<Matrix>();
 	private static numericTextField[][] MatrixData;
@@ -107,7 +107,7 @@ public class MatrizenMenuRemake {
 	/**
 	* Sets the look and feel of the menu and calls the createMenu() method
 	*/
-	public MatrizenMenuRemake() {
+	public MatrixMenu() {
 	    try {
 	        for ( LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() ) {
 	        	//System.out.println( info.getName() );
@@ -132,7 +132,7 @@ public class MatrizenMenuRemake {
 		double width = screenSize.getWidth() * 0.7;
 		double height = screenSize.getHeight() * 0.7;
 		
-		menu = new JFrame("Matrizenrechner");
+		menu = new JFrame("Matrix Calculator");
 		menu.setSize( (int)width, (int)height);
 		menu.setLocationRelativeTo(null);
 	    GridBagLayout mainBagLayout = new GridBagLayout();
@@ -145,7 +145,7 @@ public class MatrizenMenuRemake {
 		
 		menuBar = new JMenuBar();
 		menu.setJMenuBar( menuBar );
-		mainMenu = new JMenu("Hauptmenü");
+		mainMenu = new JMenu("Mainmenu");
 		menuBar.add(mainMenu);
 		
 		mainConstraint.gridx = 0;
@@ -175,7 +175,7 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridheight = 1;
 		leftConstraint.weightx = 1;
 		
-		JLabel rowLabel = new JLabel("Zeilen eingeben:");
+		JLabel rowLabel = new JLabel("Input Rows:");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 0;
 		leftMainPanel.add( rowLabel, leftConstraint );
@@ -186,7 +186,7 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 0;
 		leftMainPanel.add( rowInput, leftConstraint );
 		
-		JLabel colLabel = new JLabel("Spalten eingeben:");
+		JLabel colLabel = new JLabel("Input Columns:");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 1;
 		leftMainPanel.add( colLabel, leftConstraint );
@@ -206,7 +206,7 @@ public class MatrizenMenuRemake {
 		JScrollPane rightScrollPanel = new JScrollPane(Console); 
 		rightMainPanel.add( rightScrollPanel, rightConstraint );
 		
-		createMatrixButton = new JButton("Matrix erstellen");
+		createMatrixButton = new JButton("Create");
 		leftConstraint.gridwidth = 1;
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 2;
@@ -247,12 +247,12 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 3;
 		leftMainPanel.add( matrixEditor, leftConstraint);
 		
-		calcOptionsText = new JLabel("Was möchtest du berechnen?");
+		calcOptionsText = new JLabel("What do you wanna calculate?");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 4;
 		leftMainPanel.add( calcOptionsText, leftConstraint );
 		
-		checkDeterminante = new JCheckBox("Determinante");
+		checkDeterminante = new JCheckBox("Determinant");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 5;
 		leftMainPanel.add(checkDeterminante, leftConstraint);
@@ -260,13 +260,13 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 5;
 		leftMainPanel.add(checkInverse, leftConstraint);
-		checkTransponent = new JCheckBox("Transponieren");
+		checkTransponent = new JCheckBox("Transposed");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 6;
 		leftMainPanel.add(checkTransponent, leftConstraint);
 		
 		
-		runButton = new JButton("Berechnen");
+		runButton = new JButton("Calculate");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 7;
 		runButton.addActionListener(new ActionListener() { 
@@ -280,24 +280,24 @@ public class MatrizenMenuRemake {
 				  int cols = getMenuMatrix().getColumns();
 				  
 				  if ( checkDeterminante.isSelected() ) {
-					  matrix.addConsoleText("Die Determinante beträgt: ");
+					  matrix.addConsoleText("Determinant is: ");
 					  matrix.addConsoleTextln( String.valueOf( matrix.getDeterminant( rows, cols, matrix.getMatrix() ) ) );
 					  matrix.addConsoleTextln("");
 				  }
 				  if ( checkInverse.isSelected() ) {
-					  matrix.addConsoleTextln("Die inverse Matrix lautet: ");
+					  matrix.addConsoleTextln("Inverse is: ");
 					  matrix.getInverse();
 					  matrix.addConsoleTextln("");
 				  }
 				  if ( checkTransponent.isSelected() ) {
-					  matrix.addConsoleTextln("Die transponierte Matrix lautet: ");
+					  matrix.addConsoleTextln("Transposed is: ");
 					  matrix.printMatrix( rows, cols, matrix.getTransponiert( rows, cols, matrix.getMatrix() ) );
 				  }
 			  } 
 		});
 		leftMainPanel.add(runButton, leftConstraint);
 		
-		saveButton = new JButton("Speichern");
+		saveButton = new JButton("Save");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 8;
 		saveButton.addActionListener(new ActionListener() { 
@@ -317,16 +317,16 @@ public class MatrizenMenuRemake {
 		});
 		leftMainPanel.add(saveButton, leftConstraint);
 		
-		printSavedMatrix = new JButton("Gespeicherte Matrizen anzeigen");
+		printSavedMatrix = new JButton("Show saved matrices");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 9;
 		printSavedMatrix.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  addConsoleText("\nGespeicherte Matrizen:\n");
+				  addConsoleText("\nSaved Matrices:\n");
 				  int c = 0;
 				  for ( Matrix m : savedMatrices ) {
 					  ++c;
-					  addConsoleText( c + ". gespeicherte Matrix:\n");
+					  addConsoleText( c + ". saved matrices:\n");
 					  m.printMatrix( m.getRows(), m.getColumns(), m.getMatrix() );
 					  m.addConsoleTextln("");
 				  }
@@ -335,12 +335,12 @@ public class MatrizenMenuRemake {
 		leftMainPanel.add(printSavedMatrix, leftConstraint);
 		
 		
-		clearSavedMatrix = new JButton("Gespeicherte Matrizen löschen");
+		clearSavedMatrix = new JButton("Delete saved matrices");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 10;
 		clearSavedMatrix.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  addConsoleText("\nGespeicherte Matrizen wurden gelöscht.\n");
+				  addConsoleText("\nAll matrices where deleted.\n");
 				  savedMatrices.clear();
 				  
 				  selectionA.removeAllItems();
@@ -352,15 +352,15 @@ public class MatrizenMenuRemake {
 		JLabel optionLabel = new JLabel();
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 11;
-		optionLabel.setText("Weitere Funktionalitäten: ");
+		optionLabel.setText("Other functions: ");
 		leftMainPanel.add(optionLabel, leftConstraint);
 		
-		chooseALabel = new JLabel("Matrix A wählen:");
+		chooseALabel = new JLabel("Choose matrix A:");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 12;
 		leftMainPanel.add(chooseALabel, leftConstraint);
 		
-		chooseBLabel = new JLabel("Matrix B wählen:");
+		chooseBLabel = new JLabel("Choose matrix B:");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 12;
 		leftMainPanel.add(chooseBLabel, leftConstraint);
@@ -376,7 +376,7 @@ public class MatrizenMenuRemake {
 		leftMainPanel.add(selectionB, leftConstraint);
 		
 		
-		addMatricesButton = new JButton("Matrizen addieren");
+		addMatricesButton = new JButton("Add matrices");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 14;
 		addMatricesButton.addActionListener(new ActionListener() { 
@@ -396,7 +396,7 @@ public class MatrizenMenuRemake {
 		});
 		leftMainPanel.add(addMatricesButton, leftConstraint);
 		
-		subMatricesButton = new JButton("Matrizen subtrahieren");
+		subMatricesButton = new JButton("Subtract matrices");
 		leftConstraint.gridx = 1;
 		leftConstraint.gridy = 14;
 		subMatricesButton.addActionListener(new ActionListener() { 
@@ -416,7 +416,7 @@ public class MatrizenMenuRemake {
 		});
 		leftMainPanel.add(subMatricesButton, leftConstraint);
 		
-		multMatricesButton = new JButton("Matrizen multiplizieren");
+		multMatricesButton = new JButton("Multiply matrices");
 		leftConstraint.gridx = 0;
 		leftConstraint.gridy = 15;
 		multMatricesButton.addActionListener(new ActionListener() { 

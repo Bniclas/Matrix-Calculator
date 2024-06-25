@@ -3,12 +3,12 @@
  * Do not copy or steal!
  */
 
-package matrizenrechner_base;
+package matrixcalculator;
 
 public class executeMatricesCalc {
 
 	public static void main(String[] args) {
-		MatrizenMenuRemake menu = new MatrizenMenuRemake();
+		MatrixMenu menu = new MatrixMenu();
 	}
 
 }
