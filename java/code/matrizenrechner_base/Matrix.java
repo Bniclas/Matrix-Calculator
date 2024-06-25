@@ -7,51 +7,81 @@ package matrizenrechner_base;
 
 import javax.swing.*;
 
-public class Matrizenrechner {
+public class Matrix {
 	
 	private int m; // Zeilenzahl
 	private int n; // Spaltenzahl
 	private float[][] matrix; // zweidimensionales Array
 	private JTextArea Console;
 	
+	/**
+	* Returns matrix rows
+	*/
 	public int getRows( ) {
 		return this.m;
 	}
 	
+	/**
+	* Returns matrix columns
+	*/
 	public int getColumns( ) {
 		return this.n;
 	}
 	
+	/**
+	* Returns the matrix
+	*/
 	public float[][] getMatrix(){
 		return this.matrix;
 	}
 	
+	/**
+	* Sets matrix rows
+	*/
 	public void setRows( int rows ) {
 		this.m = rows;
 	}
 	
+	/**
+	* Sets matrix columns
+	*/
 	public void setColumns( int cols ) {
 		this.n = cols;
 	}
 	
+	/**
+	* Sets a value on a specific field of the matrix
+	*/
 	public void setValue( int row, int col, float value ) {
 		this.getMatrix()[row][col] = value;
 	}
 	
+	/**
+	* Gets the value of the required field inside the matrix
+	*/
 	public float getValue( int row, int col ) {
 		return this.getMatrix()[row][col];
 	}
 	
+	/**
+	* Adds any information to the menu-console of the frame with linebreak
+	*/
 	public void addConsoleTextln( String text ) {
 		this.Console.append(text);
 		this.Console.append("\n");
 	}
 	
+	/**
+	* Adds any information to the menu-console of the frame without linebreak
+	*/
 	public void addConsoleText( String text ) {
 		this.Console.append(text);
 	}
 	
-	public Matrizenrechner( JTextArea console, int m, int n ) {
+	/**
+	* Constructor to create a matrix
+	*/
+	public Matrix( JTextArea console, int m, int n ) {
 		this.Console = console;
 		this.setRows( m );
 		this.setColumns( n );
@@ -59,6 +89,9 @@ public class Matrizenrechner {
 	    this.initMatrix( this.m, this.n, matrix );  
 	}
 	
+	/**
+	* Prints the matrix
+	*/
 	public void printMatrix( int m, int n, float matrix[][] ){  
 	    int i,j;  
 	    for( i=0; i<m; i++ ){  
@@ -73,7 +106,10 @@ public class Matrizenrechner {
 	    }  
 	}  
 	
-	public static Matrizenrechner subMatrices( JTextArea Console, Matrizenrechner A, Matrizenrechner B ){
+	/**
+	* Method to subtract one matrix from the other
+	*/
+	public static Matrix subMatrices( JTextArea Console, Matrix A, Matrix B ){
 		int rowsA = A.getRows();
 		int rowsB = A.getRows();
 		int colsA = A.getColumns();
@@ -84,10 +120,10 @@ public class Matrizenrechner {
 		
 		if ( colsA != colsB && rowsA != rowsB ) {
 			A.addConsoleTextln("Subtraktion kann nicht durchgeführt werden.");  
-			return new Matrizenrechner( Console, 0, 0 );
+			return new Matrix( Console, 0, 0 );
 		}
 		
-		Matrizenrechner C = new Matrizenrechner( Console, rowsC, colsC );
+		Matrix C = new Matrix( Console, rowsC, colsC );
 		
 		for( int i=0; i<rowsC; i++ ) {
 			for( int j=0; j<colsC; j++ ) {
@@ -98,7 +134,10 @@ public class Matrizenrechner {
 		return C;
 	}
 	
-	public static Matrizenrechner addMatrices( JTextArea Console, Matrizenrechner A, Matrizenrechner B ){
+	/**
+	* Method to add one matrix to the other
+	*/
+	public static Matrix addMatrices( JTextArea Console, Matrix A, Matrix B ){
 		int rowsA = A.getRows();
 		int rowsB = A.getRows();
 		int colsA = A.getColumns();
@@ -109,10 +148,10 @@ public class Matrizenrechner {
 		
 		if ( colsA != colsB && rowsA != rowsB ) {
 			A.addConsoleTextln("Addition kann nicht durchgeführt werden.");  
-			return new Matrizenrechner( Console, 0, 0 );
+			return new Matrix( Console, 0, 0 );
 		}
 		
-		Matrizenrechner C = new Matrizenrechner( Console, rowsC, colsC );
+		Matrix C = new Matrix( Console, rowsC, colsC );
 		
 		for( int i=0; i<rowsC; i++ ) {
 			for( int j=0; j<colsC; j++ ) {
@@ -123,7 +162,10 @@ public class Matrizenrechner {
 		return C;
 	}
 	
-	public static Matrizenrechner multiplyMatrices( JTextArea Console, Matrizenrechner A, Matrizenrechner B ){
+	/**
+	* Method to multiply two matrices
+	*/
+	public static Matrix multiplyMatrices( JTextArea Console, Matrix A, Matrix B ){
 		int rowsA = A.getRows();
 		int rowsB = A.getRows();
 		int colsA = A.getColumns();
@@ -134,11 +176,11 @@ public class Matrizenrechner {
 		
 		if ( colsA != rowsB ) {
 			A.addConsoleTextln("Multiplikation kann nicht durchgeführt werden.");  
-			return new Matrizenrechner( Console, 0, 0 );
+			return new Matrix( Console, 0, 0 );
 		}
 		
 		
-		Matrizenrechner C = new Matrizenrechner( Console, rowsC, colsC );
+		Matrix C = new Matrix( Console, rowsC, colsC );
 
 				
 		// Matrix A loop through
@@ -157,6 +199,9 @@ public class Matrizenrechner {
 		return C;
 	}
 
+	/**
+	* Method to multiply a matrix with a single factorial number
+	*/
 	public void multMatrixWithFactor( int m, int n, float matrix[][], float factor ){
 	    int i,j;  
 
@@ -167,6 +212,9 @@ public class Matrizenrechner {
 	    }  
 	}
 
+	/**
+	* Initializing the fields of a matrix
+	*/
 	public void initMatrix( int m, int n, float matrix[][] ){  
 
 	    int i,j;  
@@ -179,7 +227,9 @@ public class Matrizenrechner {
 	    
 	}  
 
-
+	/**
+	* Returns whether the given matrix is quadratic or not
+	*/
 	public int isQuadratic( int m, int n ){  
 
 	    if ( m == n ) {  
@@ -189,7 +239,9 @@ public class Matrizenrechner {
 	    return 0;  
 	}  
 
-
+	/**
+	* Calculates the diagonals inside a matrix which are needed to calculate the determinant
+	*/
 	public float calcDiagonals( int m, int n, int nBaseMatrix, float matrix[][] ){
 	    int i,j;
 	    int startIndexN = 0; // Der Start der neuen Spalte
@@ -269,7 +321,9 @@ public class Matrizenrechner {
 	    return determinante;
 	}
 
-
+	/**
+	* Calculates the determinant of a matrix
+	*/
 	public float getDeterminant( int m, int n, float matrixData[][] ){  
 	    int i, j;
 	    float determinante = 0;
@@ -323,7 +377,9 @@ public class Matrizenrechner {
 	    return determinante;  
 	}  
 
-
+	/**
+	* Calculates the transposed matrix
+	*/
 	public float[][] getTransponiert( int m, int n, float matrix[][] ){  
 	    float matrixT[][] = new float[n][m];
 	    this.initMatrix( n, m, matrixT );
@@ -343,7 +399,9 @@ public class Matrizenrechner {
 	    return matrixT;
 	}  
 
-	  
+	/**
+	* Calculates the inverse of a matrix
+	*/
 	public float getInverse(){  
 		int m = this.getRows();
 		int n = this.getColumns();

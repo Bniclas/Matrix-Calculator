@@ -10,9 +10,9 @@ import javax.swing.border.EmptyBorder;
 
 public class MatrizenMenuRemake {
 	
-	private static Vector<Matrizenrechner> savedMatrices = new Vector<Matrizenrechner>();
+	private static Vector<Matrix> savedMatrices = new Vector<Matrix>();
 	private static numericTextField[][] MatrixData;
-	private static Matrizenrechner matrix;
+	private static Matrix matrix;
 	
 	private static JFrame menu;
 	private static JMenuBar menuBar; 
@@ -38,22 +38,44 @@ public class MatrizenMenuRemake {
 	private static JButton subMatricesButton;
 	private static JButton multMatricesButton;
 	
+	/**
+	* Used to add any information on the menu-console
+	*/
 	public static void addConsoleText( String text ) {
 		Console.append(text);
 		Console.append("\n");
 	}
 	
+	/**
+	* Returns the console of the menu
+	*/
 	public static JTextArea getConsole() {
 		return Console;
 	}
 	
-	public static Matrizenrechner getMatrixA() {
+	/**
+	* Returns the first selected matrix of the menu 
+	*/
+	public static Matrix getMatrixA() {
 		if ( selectionA.getSelectedItem() == null ) {
 			return null;
 		}
 		return savedMatrices.get( (int)selectionA.getSelectedItem() - 1 );
 	}
 	
+	/**
+	* Returns the second selected matrix of the menu 
+	*/
+	public static Matrix getMatrixB() {
+		if ( selectionB.getSelectedItem() == null ) {
+			return null;
+		}
+		return savedMatrices.get( (int)selectionB.getSelectedItem() - 1 );
+	}
+	
+	/**
+	* Returns whether both matrices are selected to do any calculations on them
+	*/
 	public static boolean bothMatricesValid() {
 		if ( getMatrixA() == null && getMatrixB() == null ) {
 			return false;
@@ -61,21 +83,17 @@ public class MatrizenMenuRemake {
 		return true;
 	}
 	
-	public static Matrizenrechner getMatrixB() {
-		if ( selectionB.getSelectedItem() == null ) {
-			return null;
-		}
-		return savedMatrices.get( (int)selectionB.getSelectedItem() - 1 );
-	}
-	
-	public static Matrizenrechner getMenuMatrix() {
+	/**
+	* Returns the matrix, that it created in the menu by the user via input
+	*/
+	public static Matrix getMenuMatrix() {
 		if ( MatrixData == null || MatrixData[0][0] == null) {
 			return null;
 		}
 		int rows = Integer.parseInt(rowInput.getText());
 		int cols = Integer.parseInt(colInput.getText());
 		  
-		matrix = new Matrizenrechner( Console, rows, cols );
+		matrix = new Matrix( Console, rows, cols );
 		  
 		for( int i=0; i<rows; i++ ) {
 			for( int j=0; j<cols; j++ ) {
@@ -86,6 +104,9 @@ public class MatrizenMenuRemake {
 		return matrix;
 	}
 
+	/**
+	* Sets the look and feel of the menu and calls the createMenu() method
+	*/
 	public MatrizenMenuRemake() {
 	    try {
 	        for ( LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() ) {
@@ -103,6 +124,9 @@ public class MatrizenMenuRemake {
 	    createMenu();
 	}
 	
+	/**
+	* Creating the menu of the calculator
+	*/
 	public void createMenu() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double width = screenSize.getWidth() * 0.7;
@@ -300,7 +324,7 @@ public class MatrizenMenuRemake {
 			  public void actionPerformed(ActionEvent e) { 
 				  addConsoleText("\nGespeicherte Matrizen:\n");
 				  int c = 0;
-				  for ( Matrizenrechner m : savedMatrices ) {
+				  for ( Matrix m : savedMatrices ) {
 					  ++c;
 					  addConsoleText( c + ". gespeicherte Matrix:\n");
 					  m.printMatrix( m.getRows(), m.getColumns(), m.getMatrix() );
@@ -357,12 +381,12 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 14;
 		addMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner A = getMatrixA();
-				  Matrizenrechner B = getMatrixB();
+				  Matrix A = getMatrixA();
+				  Matrix B = getMatrixB();
 				  if ( bothMatricesValid() == false ) {
 					  return;
 				  }
-				  Matrizenrechner C = Matrizenrechner.addMatrices( Console, A, B);
+				  Matrix C = Matrix.addMatrices( Console, A, B);
 				  
 				  int rowsC = C.getRows();
 				  int colsC = C.getColumns();
@@ -377,12 +401,12 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 14;
 		subMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner A = getMatrixA();
-				  Matrizenrechner B = getMatrixB();
+				  Matrix A = getMatrixA();
+				  Matrix B = getMatrixB();
 				  if ( bothMatricesValid() == false ) {
 					  return;
 				  }
-				  Matrizenrechner C = Matrizenrechner.subMatrices( Console, A, B);
+				  Matrix C = Matrix.subMatrices( Console, A, B);
 				  
 				  int rowsC = C.getRows();
 				  int colsC = C.getColumns();
@@ -397,12 +421,12 @@ public class MatrizenMenuRemake {
 		leftConstraint.gridy = 15;
 		multMatricesButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  Matrizenrechner A = getMatrixA();
-				  Matrizenrechner B = getMatrixB();
+				  Matrix A = getMatrixA();
+				  Matrix B = getMatrixB();
 				  if ( bothMatricesValid() == false ) {
 					  return;
 				  }
-				  Matrizenrechner C = Matrizenrechner.multiplyMatrices( Console, A, B);
+				  Matrix C = Matrix.multiplyMatrices( Console, A, B);
 				  
 				  int rowsC = C.getRows();
 				  int colsC = C.getColumns();
