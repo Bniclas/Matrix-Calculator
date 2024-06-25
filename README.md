@@ -27,18 +27,20 @@ You should know that the project probably is only going to be updated in Java.
 [Use the calculator]
 In the java-folder you can find a executable .jar file which you can download and execute.
 
-Step-by-Step:
-1. You create a matrix by telling the program how many rows and columns the new matrix should have.
-2. You click on "Create"
-3. You insert the numbers you want into the matrix (If you want to delete old numbers you have to mark the number and type a '-' or any number key
-4. If you only want to do your calculations with a single matrix you can select the things you want and press on "Calculate"
-5. Otherwise you can click on "Save" and save your matrix for later
-6. Then you will see, that the selection-boxes will get a number when pressing on "Save" this means the matrix was saved with this number and you can
+>[!NOTE]
+>Step-by-Step user guide:
+>1. You create a matrix by telling the program how many rows and columns the new matrix should have.
+>2. You click on "Create"
+>3. You insert the numbers you want into the matrix (If you want to delete old numbers you have to mark the number and type a '-' or any number key
+>4. If you only want to do your calculations with a single matrix you can select the things you want and press on "Calculate"
+>5. Otherwise you can click on "Save" and save your matrix for later
+>6. Then you will see, that the selection-boxes will get a number when pressing on "Save" this means the matrix was saved with this number and you can
    show all saved matrices via the given button. Then you can select your matrices and make other calculations like multiply and so on.
 
-Requirements to run the .jar file:
-- [X] Java Runtime Environment
-- [X] If you have installed the Java Development Kit, the JRE is installed automatically
+>[!IMPORTANT]
+>Requirements to run the .jar file:
+>- [X] Java Runtime Environment
+>- [X] If you have installed the Java Development Kit, the JRE is installed automatically
 
 ## What is planned for the future ?
 - [ ] Optimization for calculations
