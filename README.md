@@ -12,7 +12,6 @@ I know that the calculator might not be perfect but it's just a simple project f
 ## Where can I find any documentation of the files ?
 
 The project is mainly scripted in Java. That's why you can find most of the documentation information in the java/documentation folder.
-Wer verwaltet das Projekt und trägt dazu bei?
 
 ## How to use it ?
 
