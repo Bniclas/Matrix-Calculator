@@ -4,14 +4,14 @@ Here is a short introduction into my matrix calculator and some basic informatio
 ## Why this calculator ?
 
 The calculator is just a small project for me to come up with Java and try to bring math into Java.
-I began the calculator in C but however I decided to shift the project to Java to create a simple GUI for other users as well as me
+I started the project in C but however I decided to shift the project to Java to create a simple GUI for other users as well as me
 to make it easy and funny to work with this calculator.
 
 I know that the calculator might not be perfect but it's just a simple project for me to learn Java.
 
 ## Where can I find any documentation of the files ?
 
-The project is mainly scripted in Java. That's why you can find most of the documentation information in the java/documentation folder.
+The project is mainly written in Java. That's why you can find most of the documentation information in the java/documentation folder.
 
 ## How to use it ?
 
