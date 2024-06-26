@@ -53,4 +53,4 @@ I'm going to make things as easy as possible for users to use this calculator an
 
 Here's a picture of how the calculator looks at the moment:
 
-![image](https://github.com/Bniclas/Matrix-Calculator/assets/131747708/ee264863-ff5d-4d9f-992b-ad42f434d0a7)
+![image](https://github.com/Bniclas/Matrix-Calculator/blob/main/java/showcase/alpha.png)
