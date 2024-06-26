@@ -1,5 +1,4 @@
 /**
- * @autor Niclas Burger
  * Do not copy or steal!
  */
 
@@ -7,6 +6,9 @@ package matrixcalculator;
 
 import javax.swing.*;
 
+/**
+* Class for any matrix and to perform any calculations on them
+*/
 public class Matrix {
 	
 	private int m; // Rows

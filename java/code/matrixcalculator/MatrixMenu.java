@@ -1,3 +1,7 @@
+/**
+ * Do not copy or steal!
+ */
+
 package matrixcalculator;
 
 import java.awt.*;
@@ -8,6 +12,9 @@ import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
 
+/**
+* Class to create the menu for the users
+*/
 public class MatrixMenu {
 	
 	private static Vector<Matrix> savedMatrices = new Vector<Matrix>();
